@@ -297,10 +297,22 @@
             color: #27ae60;
             font-weight: bold;
         }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-top: 2rem;
+            color: #2c3e50;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <nav style="text-align: center; margin-bottom: 1rem;">
+            <a href="home.html" class="cta-button">🏠 Back to Home</a>
+        </nav>
         <header class="header">
             <h1>🔍 Instrumenting a Distributed App</h1>
             <p class="subtitle">AWS X-Ray Performance Monitoring & Debugging Lab</p>
@@ -370,12 +382,13 @@
                 <h2><span class="icon">🏗️</span>Architecture Evolution</h2>
                 <div class="architecture-images">
                     <div class="architecture-image">
-                        <a href ="//xraylab/blob/main/AWSDF4-Lab7-Architecture-Before.png" class="cta-button">Initial Architecture</h3></a>
-                        
+                        <h3>Initial Architecture</h3>
+                        <img src="AWSDF4-Lab7-Architecture-Before.png" alt="Initial Architecture Diagram">
                         <p>Microservices-based bike app with React frontend, API Gateway, Lambda functions, and DynamoDB</p>
                     </div>
                     <div class="architecture-image">
-                         <a href ="//xraylab/blob/main/AWSDF4-Lab7-Architecture-After.png" class="cta-button">Enhanced with X-Ray</h3></a>
+                        <h3>Enhanced with X-Ray</h3>
+                        <img src="AWSDF4-Lab7-Architecture-After.png" alt="Architecture with X-Ray Diagram">
                         <p>Same architecture now instrumented with AWS X-Ray for comprehensive distributed tracing</p>
                     </div>
                 </div>
@@ -448,11 +461,11 @@
             <br>
             <p><span class="highlight">Identify performance bottlenecks</span> • <span class="highlight">Reduce MTTR</span> • <span class="highlight">Improve user experience</span> • <span class="highlight">Optimize costs</span></p>
             <br>
-            <a href="https://linkedin.com/in/mohamed-a-kaba" class="cta-button">
+            <a href="https://www.linkedin.com/in/mohamed-a-kaba/" class="cta-button">
                 🔗 Connect on LinkedIn
             </a>
-            <a href="https://github.com/mkaba214/" class="cta-button">
-                💻 View GitHub
+            <a href="home.html" class="cta-button">
+                🏠 View Home
             </a>
         </div>
     </div>
@@ -487,6 +500,10 @@
             });
         });
     </script>
+
+    <footer class="footer">
+        <p>&copy; 2025 Mohamed Adama Kaba. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>
