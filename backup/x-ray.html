@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS X-Ray Lab - Performance Monitoring & Debugging</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .lab-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-card {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .info-card strong {
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .objectives-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .objectives-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .objectives-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .architecture-section {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        .architecture-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .architecture-image {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .architecture-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .architecture-image h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: scale(1.05);
+        }
+
+        .service-card h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .tasks-section {
+            grid-column: 1 / -1;
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .task-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid #e74c3c;
+            transition: transform 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateX(5px);
+        }
+
+        .task-card h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .skills-showcase {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .architecture-images {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .success-indicator {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-top: 2rem;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav style="text-align: center; margin-bottom: 1rem;">
+            <a href="index.html" class="cta-button">🏠 Back to Home</a>
+        </nav>
+        <header class="header">
+            <h1>🔍 Instrumenting a Distributed App</h1>
+            <p class="subtitle">AWS X-Ray Performance Monitoring & Debugging Lab</p>
+            <div class="lab-info">
+                <div class="info-card">
+                    <strong>Lab Code:</strong>
+                    SPL-PW-300-DVF407-1
+                </div>
+                <div class="info-card">
+                    <strong>Duration:</strong>
+                    2 Hours
+                </div>
+                <div class="info-card">
+                    <strong>Focus:</strong>
+                    Performance Analysis
+                </div>
+                <div class="info-card">
+                    <strong>Status:</strong>
+                    <span class="success-indicator">✅ Completed</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-grid">
+            <div class="card">
+                <h2><span class="icon">🎯</span>Lab Objectives</h2>
+                <ul class="objectives-list">
+                    <li>Enable X-Ray tracing for distributed applications</li>
+                    <li>Create X-Ray trace maps for end-to-end visualization</li>
+                    <li>Analyze and debug application issues using traces</li>
+                    <li>Identify performance bottlenecks in microservices</li>
+                    <li>Implement monitoring best practices</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2><span class="icon">🛠️</span>Technologies Used</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h4>AWS X-Ray</h4>
+                        <p>Distributed tracing service for performance analysis</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>API Gateway</h4>
+                        <p>RESTful API management and monitoring</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>AWS Lambda</h4>
+                        <p>Serverless function execution and tracing</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Step Functions</h4>
+                        <p>State machine workflow orchestration</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Amazon Cognito</h4>
+                        <p>User authentication and authorization</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>DynamoDB</h4>
+                        <p>NoSQL database with tracing integration</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card architecture-section">
+                <h2><span class="icon">🏗️</span>Architecture Evolution</h2>
+                <div class="architecture-images">
+                    <div class="architecture-image">
+                        <h3>Initial Architecture</h3>
+                        <img src="AWSDF4-Lab7-Architecture-Before.png" alt="Initial Architecture Diagram">
+                        <p>Microservices-based bike app with React frontend, API Gateway, Lambda functions, and DynamoDB</p>
+                    </div>
+                    <div class="architecture-image">
+                        <h3>Enhanced with X-Ray</h3>
+                        <img src="AWSDF4-Lab7-Architecture-After.png" alt="Architecture with X-Ray Diagram">
+                        <p>Same architecture now instrumented with AWS X-Ray for comprehensive distributed tracing</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card tasks-section">
+                <h2><span class="icon">📋</span>Key Accomplishments</h2>
+                <div class="task-grid">
+                    <div class="task-card">
+                        <h4>🔧 Environment Setup</h4>
+                        <p>Configured AWS Cloud9 IDE, cloned microservices repository, and deployed SAM application with proper authentication</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>🔐 Cognito Integration</h4>
+                        <p>Integrated Amazon Cognito hosted UI for user authentication and tested login functionality</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>👤 User Management</h4>
+                        <p>Created and tested new users in Cognito user pool with proper credential management</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>📊 X-Ray Implementation</h4>
+                        <p>Enabled X-Ray tracing for API Gateway, Lambda functions, and Step Functions state machine</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>🧪 API Testing</h4>
+                        <p>Tested API endpoints using CLI commands and analyzed trace maps for performance insights</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>🐛 Debugging Excellence</h4>
+                        <p>Identified and resolved Lambda function error using X-Ray traces, demonstrating real-world troubleshooting skills</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card skills-showcase">
+                <h2>💡 Skills Demonstrated</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <h4>🔍 Performance Monitoring</h4>
+                        <p>Distributed system observability</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>🐛 Debugging</h4>
+                        <p>Root cause analysis using traces</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>☁️ AWS Services</h4>
+                        <p>Multi-service integration expertise</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>🏗️ DevOps</h4>
+                        <p>CI/CD and infrastructure automation</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>🔒 Security</h4>
+                        <p>Authentication and authorization</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>📈 Analytics</h4>
+                        <p>Performance optimization insights</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>🚀 Real-World Impact</h2>
+            <p>This lab demonstrates practical skills in monitoring and debugging distributed systems - essential capabilities for modern cloud applications. The hands-on experience with AWS X-Ray showcases ability to:</p>
+            <br>
+            <p><span class="highlight">Identify performance bottlenecks</span> • <span class="highlight">Reduce MTTR</span> • <span class="highlight">Improve user experience</span> • <span class="highlight">Optimize costs</span></p>
+            <br>
+            <a href="index.html" class="cta-button">
+                🏠 View Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scrolling and interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on scroll
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // Add dynamic background effect
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                document.body.style.background = `linear-gradient(${x * 360}deg, #667eea ${y * 50}%, #764ba2 ${100 - y * 50}%)`;
+            });
+        });
+    </script>
+
+    <footer class="footer">
+        <p>&copy; 2025 Mohamed Adama Kaba. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
