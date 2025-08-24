@@ -356,6 +356,86 @@
             margin-right: 8px;
         }
 
+        .architecture-controls {
+            margin-bottom: 1.5rem;
+        }
+
+        .description-toggle-btn {
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .description-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .process-description {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .process-description.hidden {
+            display: none;
+        }
+
+        .process-description h4 {
+            color: #ecf0f1;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+
+        .steps-content {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .step-item {
+            background: rgba(236, 240, 241, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            background: rgba(236, 240, 241, 0.15);
+            transform: translateX(5px);
+        }
+
+        .step-highlight {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .step-item p {
+            margin: 0;
+            line-height: 1.6;
+            color: #ecf0f1;
+        }
+
         .footer {
             text-align: center;
             padding: 2rem;
@@ -412,6 +492,48 @@
             <div class="architecture-section">
                 <div class="card">
                     <h2><span class="icon">📊</span>Solution Architecture</h2>
+                    <div class="architecture-controls">
+                        <button id="showDescriptionBtn" class="description-toggle-btn">
+                            📋 Show Detailed Process Description
+                        </button>
+                        <div id="processDescription" class="process-description hidden">
+                            <h4>CI/CD Pipeline Process Steps</h4>
+                            <div class="steps-content">
+                                <div class="step-item">
+                                    <span class="step-highlight">Step 1</span>
+                                    <p>The developer makes changes to the application code using an AWS supported IDE.</p>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-highlight">Step 2</span>
+                                    <p>The developer commits code changes and pushes the code to an AWS CodeCommit Git repository.</p>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-highlight">Step 3</span>
+                                    <p>When changes are made to the code repository in CodeCommit, it initiates the continuous integration and continuous delivery (CI/CD) pipeline set up in AWS CodePipeline.</p>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-highlight">Step 4</span>
+                                    <p>CodePipeline invokes the AWS CodeBuild Unit test project to perform unit testing on the code.</p>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-highlight">Step 5</span>
+                                    <p>After the Unit test project is completed, the CodeBuild Build image project is invoked.</p>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-highlight">Step 6</span>
+                                    <p>The CodeBuild Build image project builds a container image from the code, tags the image, and pushes it to Amazon ECR.</p>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-highlight">Step 7</span>
+                                    <p>The final stage of the pipeline is invoked, which is the CodeBuild Deploy app project.</p>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-highlight">Step 8</span>
+                                    <p>The CodeBuild Deploy app project deploys the container image from Amazon ECR to the Amazon EKS cluster.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="architecture-image">
                         <div class="diagram-container">
                             <img src="capstone-arch-diagram.png" alt="Capstone Project Architecture Diagram" id="architecture-diagram">
@@ -565,6 +687,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             const overlays = document.querySelectorAll('.diagram-overlay');
             const tooltips = document.querySelectorAll('.tooltip');
+            const descriptionBtn = document.getElementById('showDescriptionBtn');
+            const processDescription = document.getElementById('processDescription');
             let activeTooltip = null;
 
             overlays.forEach((overlay, index) => {
@@ -599,6 +723,17 @@
                 overlay.addEventListener('mouseleave', function() {
                     overlay.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
                 });
+            });
+
+            // Description button functionality
+            descriptionBtn.addEventListener('click', function() {
+                if (processDescription.classList.contains('hidden')) {
+                    processDescription.classList.remove('hidden');
+                    descriptionBtn.innerHTML = '📋 Hide Process Description';
+                } else {
+                    processDescription.classList.add('hidden');
+                    descriptionBtn.innerHTML = '📋 Show Detailed Process Description';
+                }
             });
 
             // Click anywhere else to close tooltips
