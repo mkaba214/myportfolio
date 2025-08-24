@@ -1,0 +1,37 @@
+Solution overview
+
+The initial state of the solution has a working code of the application written using Python and Django web framework, which also includes unit testing. In this capstone, you will face challenges to improve the web application and deploy it into a containerized environment through a continuous integration and continuous delivery (CI/CD) pipeline.
+
+Throughout the project, you will undertake the following tasks: 
+
+Clone the code repository into an AWS supported integrated development environment (IDE)
+
+Run and view the application in the IDE
+
+Make changes to the application UI and backend code
+
+Create and run new unit tests for the code
+
+Build and run a pipeline for continuous integration using AWS CodeBuild and AWS CodePipeline to automate unit tests
+
+Review test results using the continuous integration pipeline
+
+Build and tag a container image, and push the image to an Amazon Elastic Container Registry (Amazon ECR) repository.
+
+Use the CodePipeline to automate building, tagging, and pushing the container image
+
+Deploy the container image on a Kubernetes cluster managed by Amazon Elastic Kubernetes Service (Amazon EKS)
+
+Troubleshoot and remediate application issues
+
+Deploy application updates and perform rollbacks
+
+Update the application infrastructure to use an Application Load Balancer (ALB)
+
+Use the CodePipeline to automate deploying the container image on the Kubernetes cluster
+
+The developer makes updates to application code using an AWS supported IDE. They then push the code changes to a Git repository. 
+This initiates a new CI/CD pipeline in AWS CodePipeline, which uses AWS CodeBuild to run unit tests and build the container image for the project. 
+The image is pushed to Amazon ECR. After the image is pushed to Amazon ECR, the final step in the CI/CD pipeline deploys the project to the Amazon EKS cluster. 
+The application frontend runs on containers, and the application is backed by two database services: 
+Amazon Relational Database Service (Amazon RDS) and Amazon DynamoDB.
