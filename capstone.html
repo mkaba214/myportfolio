@@ -283,11 +283,29 @@
             cursor: pointer;
             border: 2px solid transparent;
             transition: all 0.3s ease;
+            background: rgba(52, 152, 219, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .diagram-overlay:hover {
             border: 2px solid #3498db;
-            background: rgba(52, 152, 219, 0.1);
+            background: rgba(52, 152, 219, 0.2);
+        }
+
+        .overlay-number {
+            background: #3498db;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .tooltip {
@@ -443,7 +461,7 @@
                             </div>
                         </div>
                         <h3>Interactive CI/CD Pipeline Architecture</h3>
-                        <p style="color: #666; font-size: 0.9rem;">Hover over different areas of the diagram to see step-by-step process details</p>
+                        <p style="color: #666; font-size: 0.9rem;">Click on the numbered areas of the diagram to see step-by-step process details</p>
                     </div>
                 </div>
             </div>
@@ -547,28 +565,53 @@
         document.addEventListener('DOMContentLoaded', function() {
             const overlays = document.querySelectorAll('.diagram-overlay');
             const tooltips = document.querySelectorAll('.tooltip');
+            let activeTooltip = null;
 
             overlays.forEach((overlay, index) => {
-                const tooltipId = `tooltip-${index + 1}`;
+                const stepNumber = parseInt(overlay.getAttribute('data-step'));
+                const tooltipId = `tooltip-${stepNumber}`;
                 const tooltip = document.getElementById(tooltipId);
 
-                overlay.addEventListener('mouseenter', function(e) {
-                    hideAllTooltips();
-                    showTooltip(tooltip, e);
+                // Add visual number indicator to overlay
+                overlay.innerHTML = `<div class="overlay-number">${stepNumber}</div>`;
+
+                overlay.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // If clicking the same overlay, toggle it
+                    if (activeTooltip === tooltip && tooltip.classList.contains('show')) {
+                        hideTooltip(tooltip);
+                        activeTooltip = null;
+                    } else {
+                        // Hide any currently active tooltip
+                        hideAllTooltips();
+                        // Show the clicked tooltip
+                        showTooltip(tooltip, e);
+                        activeTooltip = tooltip;
+                    }
+                });
+
+                // Add hover effect to indicate clickable
+                overlay.addEventListener('mouseenter', function() {
+                    overlay.style.backgroundColor = 'rgba(52, 152, 219, 0.2)';
                 });
 
                 overlay.addEventListener('mouseleave', function() {
-                    hideTooltip(tooltip);
+                    overlay.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
                 });
+            });
 
-                overlay.addEventListener('mousemove', function(e) {
-                    updateTooltipPosition(tooltip, e);
-                });
+            // Click anywhere else to close tooltips
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.diagram-overlay') && !e.target.closest('.tooltip')) {
+                    hideAllTooltips();
+                    activeTooltip = null;
+                }
             });
 
             function showTooltip(tooltip, event) {
                 tooltip.classList.add('show');
-                updateTooltipPosition(tooltip, event);
+                positionTooltip(tooltip, event.target);
             }
 
             function hideTooltip(tooltip) {
@@ -581,22 +624,25 @@
                 });
             }
 
-            function updateTooltipPosition(tooltip, event) {
-                const rect = tooltip.getBoundingClientRect();
+            function positionTooltip(tooltip, overlay) {
+                const overlayRect = overlay.getBoundingClientRect();
                 const containerRect = document.querySelector('.diagram-container').getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
                 
-                let left = event.clientX - containerRect.left + 15;
-                let top = event.clientY - containerRect.top - rect.height - 15;
+                // Position tooltip below the overlay by default
+                let left = overlayRect.left - containerRect.left + (overlayRect.width / 2) - (tooltipRect.width / 2);
+                let top = overlayRect.bottom - containerRect.top + 10;
 
                 // Ensure tooltip stays within container bounds
-                if (left + rect.width > containerRect.width) {
-                    left = event.clientX - containerRect.left - rect.width - 15;
-                }
-                if (left < 0) {
+                if (left < 10) {
                     left = 10;
+                } else if (left + tooltipRect.width > containerRect.width - 10) {
+                    left = containerRect.width - tooltipRect.width - 10;
                 }
-                if (top < 0) {
-                    top = event.clientY - containerRect.top + 15;
+
+                // If tooltip would go below container, position it above the overlay
+                if (top + tooltipRect.height > containerRect.height - 10) {
+                    top = overlayRect.top - containerRect.top - tooltipRect.height - 10;
                 }
 
                 tooltip.style.left = left + 'px';
