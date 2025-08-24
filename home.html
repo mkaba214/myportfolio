@@ -217,56 +217,6 @@
             margin-top: 40px;
         }
 
-        .language-switcher {
-            position: fixed;
-            top: 50px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 10px 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .language-switcher input[type="radio"] {
-            display: none;
-        }
-
-        .language-switcher label {
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            color: #666;
-        }
-
-        .language-switcher input[type="radio"]:checked + label {
-            background: linear-gradient(45deg, #3498db, #9b59b6);
-            color: white;
-        }
-
-        .fr-content {
-            display: none;
-        }
-
-        .en-content {
-            display: block;
-        }
-
-        body[data-lang="fr"] .fr-content {
-            display: block;
-        }
-
-        body[data-lang="fr"] .en-content {
-            display: none;
-        }
-
         @media (max-width: 768px) {
             .moving-banner {
                 font-size: 12px;
@@ -276,39 +226,22 @@
             .container {
                 margin-top: 35px;
             }
-
-            .language-switcher {
-                top: 45px;
-                right: 10px;
-                padding: 8px 12px;
-            }
         }
     </style>
 </head>
-<body data-lang="en">
+<body>
     <div class="moving-banner">
-        <div class="banner-text en-content">🚀 Preparing to migrate to AWS Amplify 🚀 Preparing to migrate to AWS Amplify 🚀 Preparing to migrate to AWS Amplify 🚀</div>
-        <div class="banner-text fr-content">🚀 Préparation de la migration vers AWS Amplify 🚀 Préparation de la migration vers AWS Amplify 🚀 Préparation de la migration vers AWS Amplify 🚀</div>
-    </div>
-    
-    <div class="language-switcher">
-        <input type="radio" id="lang-en" name="language" value="en" checked>
-        <label for="lang-en">🇺🇸 EN</label>
-        <input type="radio" id="lang-fr" name="language" value="fr">
-        <label for="lang-fr">🇫🇷 FR</label>
+        <div class="banner-text">🚀 Preparing to migrate to AWS Amplify 🚀 Preparing to migrate to AWS Amplify 🚀 Preparing to migrate to AWS Amplify 🚀</div>
     </div>
     
     <div class="container">
         <header class="profile-header">
             <img src="myphoto.jpeg" alt="Mohamed Adama Kaba" class="profile-photo">
             <h1>Mohamed Adama Kaba</h1>
-            <p class="aws-title en-content">AWS Cloud Institute | Aspiring Cloud Application Developer</p>
-            <p class="aws-title fr-content">Institut AWS Cloud | Développeur d'Applications Cloud en Devenir</p>
-            <p class="title en-content">IT Support Specialist & Cloud Enthusiast</p>
-            <p class="title fr-content">Spécialiste Support IT & Passionné Cloud</p>
+            <p class="aws-title">AWS Cloud Institute | Aspiring Cloud Application Developer</p>
+            <p class="title">IT Support Specialist & Cloud Enthusiast</p>
             <div class="certifications-section">
-                <h3 class="en-content">Professional Certifications</h3>
-                <h3 class="fr-content">Certifications Professionnelles</h3>
+                <h3>Professional Certifications</h3>
                 <div class="certifications-list">
                     <div class="certification-item">Certified AWS Cloud Practitioner</div>
                     <div class="certification-item">Certified Azure Fundamentals</div>
@@ -321,85 +254,49 @@
         </header>
 
         <div class="overview-card">
-            <h2 class="en-content">Overview</h2>
-            <h2 class="fr-content">Aperçu</h2>
-            <p class="en-content">I'm an IT support specialist with experience in providing technical assistance and troubleshooting for various hardware and software issues. I have also gained some hands-on knowledge in Azure Cloud and AWS platforms, which I'm eager to apply in a cloud-based environment. I'm passionate about learning new technologies and solving problems, and I'm always looking for opportunities to improve my skills and grow professionally.</p>
-            <p class="fr-content">Je suis un spécialiste du support informatique avec de l'expérience dans la fourniture d'assistance technique et le dépannage pour divers problèmes matériels et logiciels. J'ai également acquis des connaissances pratiques sur les plateformes Azure Cloud et AWS, que j'ai hâte d'appliquer dans un environnement cloud. Je suis passionné par l'apprentissage de nouvelles technologies et la résolution de problèmes, et je recherche toujours des opportunités pour améliorer mes compétences et évoluer professionnellement.</p>
+            <h2>Overview</h2>
+            <p>I'm an IT support specialist with experience in providing technical assistance and troubleshooting for various hardware and software issues. I have also gained some hands-on knowledge in Azure Cloud and AWS platforms, which I'm eager to apply in a cloud-based environment. I'm passionate about learning new technologies and solving problems, and I'm always looking for opportunities to improve my skills and grow professionally.</p>
         </div>
 
         <div class="skills-section">
             <div class="skill-card">
-                <h3 class="en-content">🔧 IT Support</h3>
-                <h3 class="fr-content">🔧 Support IT</h3>
-                <p class="en-content">Hardware & Software Troubleshooting</p>
-                <p class="fr-content">Dépannage Matériel & Logiciel</p>
+                <h3>🔧 IT Support</h3>
+                <p>Hardware & Software Troubleshooting</p>
             </div>
             <div class="skill-card">
-                <h3 class="en-content">☁️ AWS Cloud</h3>
-                <h3 class="fr-content">☁️ AWS Cloud</h3>
-                <p class="en-content">Hands-on Experience</p>
-                <p class="fr-content">Expérience Pratique</p>
+                <h3>☁️ AWS Cloud</h3>
+                <p>Hands-on Experience</p>
             </div>
             <div class="skill-card">
-                <h3 class="en-content">🌐 Azure Cloud</h3>
-                <h3 class="fr-content">🌐 Azure Cloud</h3>
-                <p class="en-content">Platform Knowledge</p>
-                <p class="fr-content">Connaissance de la Plateforme</p>
+                <h3>🌐 Azure Cloud</h3>
+                <p>Platform Knowledge</p>
             </div>
             <div class="skill-card">
-                <h3 class="en-content">🚀 Problem Solving</h3>
-                <h3 class="fr-content">🚀 Résolution de Problèmes</h3>
-                <p class="en-content">Technical Solutions</p>
-                <p class="fr-content">Solutions Techniques</p>
+                <h3>🚀 Problem Solving</h3>
+                <p>Technical Solutions</p>
             </div>
         </div>
 
         <div class="cta-section">
-            <h2 class="en-content">Let's Connect</h2>
-            <h2 class="fr-content">Connectons-nous</h2>
+            <h2>Let's Connect</h2>
             <a href="https://www.linkedin.com/in/mohamed-a-kaba/" class="cta-button" target="_blank" rel="noopener noreferrer">
                 🔗 LinkedIn
             </a>
         </div>
 
         <div class="cta-section">
-            <h2 class="en-content">Projects and Labs</h2>
-            <h2 class="fr-content">Projets et Laboratoires</h2>
+            <h2>Projects and Labs</h2>
             <a href="x-ray.html" class="cta-button">
-                <span class="en-content">📊 AWS X-Ray Lab</span>
-                <span class="fr-content">📊 Laboratoire AWS X-Ray</span>
+                📊 AWS X-Ray Lab
             </a>
             <a href="capstone.html" class="cta-button">
-                <span class="en-content">🎓 Capstone Lab</span>
-                <span class="fr-content">🎓 Laboratoire Capstone</span>
+                🎓 Capstone Lab
             </a>
         </div>
     </div>
 
     <footer class="footer">
-        <p class="en-content">&copy; 2025 Mohamed Adama Kaba. All rights reserved.</p>
-        <p class="fr-content">&copy; 2025 Mohamed Adama Kaba. Tous droits réservés.</p>
+        <p>&copy; 2025 Mohamed Adama Kaba. All rights reserved.</p>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const languageSwitcher = document.querySelectorAll('input[name="language"]');
-            const body = document.body;
-            
-            // Load saved language preference
-            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
-            body.setAttribute('data-lang', savedLang);
-            document.querySelector(`input[value="${savedLang}"]`).checked = true;
-            
-            // Language switcher event listeners
-            languageSwitcher.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const selectedLang = this.value;
-                    body.setAttribute('data-lang', selectedLang);
-                    localStorage.setItem('preferredLanguage', selectedLang);
-                });
-            });
-        });
-    </script>
 </body>
 </html>
