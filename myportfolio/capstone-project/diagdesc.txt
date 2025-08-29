@@ -1,0 +1,23 @@
+Step 1
+The developer makes changes to the application code using an AWS supported IDE.
+
+Step 2
+The developer commits code changes and pushes the code to an AWS CodeCommit Git repository.
+
+Step 3
+When changes are made to the code repository in CodeCommit, it initiates the continuous integration and continuous delivery (CI/CD) pipeline set up in AWS CodePipeline.
+
+Step 4
+CodePipeline invokes the AWS CodeBuild Unit test project to perform unit testing on the code.
+
+Step 5
+After the Unit test project is completed, the CodeBuild Build image project is invoked.
+
+Step 6
+The CodeBuild Build image project builds a container image from the code, tags the image, and pushes it to Amazon ECR.
+
+Step 7
+The final stage of the pipeline is invoked, which is the CodeBuild Deploy app project.
+
+Step 8
+The CodeBuild Deploy app project deploys the container image from Amazon ECR to the Amazon EKS cluster.

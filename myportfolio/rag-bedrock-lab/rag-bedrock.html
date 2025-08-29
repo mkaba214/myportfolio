@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AWS X-Ray Lab - Performance Monitoring & Debugging</title>
+    <title>RAG with Amazon Bedrock Knowledge Bases - Performance Monitoring & Debugging</title>
     <style>
         * {
             margin: 0;
@@ -311,27 +311,27 @@
 <body>
     <div class="container">
         <nav style="text-align: center; margin-bottom: 1rem;">
-            <a href="home.html" class="cta-button">🏠 Back to Home</a>
+            <a href="../index.html" class="cta-button">🏠 Back to Home</a>
         </nav>
         <header class="header">
-            <h1>🔍 Instrumenting a Distributed App</h1>
-            <p class="subtitle">AWS X-Ray Performance Monitoring & Debugging Lab</p>
+            <h1>🤖 RAG with Amazon Bedrock Knowledge Bases</h1>
+            <p class="subtitle">Retrieval-Augmented Generation Implementation Lab</p>
             <div class="lab-info">
                 <div class="info-card">
-                    <strong>Lab Code:</strong>
-                    SPL-PW-300-DVF407-1
+                    <strong>Lab Focus:</strong>
+                    RAG Implementation
                 </div>
                 <div class="info-card">
                     <strong>Duration:</strong>
-                    2 Hours
+                    3 Hours
                 </div>
                 <div class="info-card">
-                    <strong>Focus:</strong>
-                    Performance Analysis
+                    <strong>Complexity:</strong>
+                    Advanced AI/ML
                 </div>
                 <div class="info-card">
                     <strong>Status:</strong>
-                    <span class="success-indicator">✅ Completed</span>
+                    <span style="color: #f39c12; font-weight: bold;">🔄 In Progress</span>
                 </div>
             </div>
         </header>
@@ -340,11 +340,11 @@
             <div class="card">
                 <h2><span class="icon">🎯</span>Lab Objectives</h2>
                 <ul class="objectives-list">
-                    <li>Enable X-Ray tracing for distributed applications</li>
-                    <li>Create X-Ray trace maps for end-to-end visualization</li>
-                    <li>Analyze and debug application issues using traces</li>
-                    <li>Identify performance bottlenecks in microservices</li>
-                    <li>Implement monitoring best practices</li>
+                    <li>Set up Amazon Bedrock Knowledge Bases</li>
+                    <li>Implement Retrieval-Augmented Generation (RAG)</li>
+                    <li>Configure vector embeddings and search</li>
+                    <li>Test Q&A system with knowledge retrieval</li>
+                    <li>Optimize response accuracy and relevance</li>
                 </ul>
             </div>
 
@@ -352,44 +352,48 @@
                 <h2><span class="icon">🛠️</span>Technologies Used</h2>
                 <div class="services-grid">
                     <div class="service-card">
-                        <h4>AWS X-Ray</h4>
-                        <p>Distributed tracing service for performance analysis</p>
+                        <h4>Amazon Bedrock</h4>
+                        <p>Fully managed foundation model service</p>
                     </div>
                     <div class="service-card">
-                        <h4>API Gateway</h4>
-                        <p>RESTful API management and monitoring</p>
+                        <h4>Knowledge Bases</h4>
+                        <p>Vector database for document storage</p>
                     </div>
                     <div class="service-card">
-                        <h4>AWS Lambda</h4>
-                        <p>Serverless function execution and tracing</p>
+                        <h4>Embedding Models</h4>
+                        <p>Text-to-vector conversion for search</p>
                     </div>
                     <div class="service-card">
-                        <h4>Step Functions</h4>
-                        <p>State machine workflow orchestration</p>
+                        <h4>Large Language Models</h4>
+                        <p>Generative AI for response creation</p>
                     </div>
                     <div class="service-card">
-                        <h4>Amazon Cognito</h4>
-                        <p>User authentication and authorization</p>
+                        <h4>Vector Search</h4>
+                        <p>Semantic similarity matching</p>
                     </div>
                     <div class="service-card">
-                        <h4>DynamoDB</h4>
-                        <p>NoSQL database with tracing integration</p>
+                        <h4>AWS Console</h4>
+                        <p>Service configuration and testing</p>
                     </div>
                 </div>
             </div>
 
             <div class="card architecture-section">
-                <h2><span class="icon">🏗️</span>Architecture Evolution</h2>
+                <h2><span class="icon">🏗️</span>RAG Architecture Flow</h2>
                 <div class="architecture-images">
                     <div class="architecture-image">
-                        <h3>Initial Architecture</h3>
-                        <img src="AWSDF4-Lab7-Architecture-Before.png" alt="Initial Architecture Diagram">
-                        <p>Microservices-based bike app with React frontend, API Gateway, Lambda functions, and DynamoDB</p>
+                        <h3>Data Ingestion Pipeline</h3>
+                        <div style="background: #ecf0f1; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 2rem; color: #7f8c8d;">
+                            📄 Documents → Vector Embeddings → Knowledge Base Storage
+                        </div>
+                        <p>Documents are processed, vectorized, and stored in the knowledge base for retrieval</p>
                     </div>
                     <div class="architecture-image">
-                        <h3>Enhanced with X-Ray</h3>
-                        <img src="AWSDF4-Lab7-Architecture-After.png" alt="Architecture with X-Ray Diagram">
-                        <p>Same architecture now instrumented with AWS X-Ray for comprehensive distributed tracing</p>
+                        <h3>Query Processing Flow</h3>
+                        <div style="background: #ecf0f1; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 2rem; color: #7f8c8d;">
+                            🔍 Query → Vector Search → Context + LLM → Response
+                        </div>
+                        <p>User queries trigger semantic search and generate contextual responses using retrieved knowledge</p>
                     </div>
                 </div>
             </div>
@@ -398,28 +402,28 @@
                 <h2><span class="icon">📋</span>Key Accomplishments</h2>
                 <div class="task-grid">
                     <div class="task-card">
-                        <h4>🔧 Environment Setup</h4>
-                        <p>Configured AWS Cloud9 IDE, cloned microservices repository, and deployed SAM application with proper authentication</p>
+                        <h4>🔧 Bedrock Setup</h4>
+                        <p>Configured Amazon Bedrock access, enabled foundation models, and set up proper IAM permissions</p>
                     </div>
                     <div class="task-card">
-                        <h4>🔐 Cognito Integration</h4>
-                        <p>Integrated Amazon Cognito hosted UI for user authentication and tested login functionality</p>
+                        <h4>📚 Knowledge Base Creation</h4>
+                        <p>Created vector database, configured embedding models, and set up document ingestion pipeline</p>
                     </div>
                     <div class="task-card">
-                        <h4>👤 User Management</h4>
-                        <p>Created and tested new users in Cognito user pool with proper credential management</p>
+                        <h4>📄 Document Processing</h4>
+                        <p>Uploaded and processed various document formats, optimized chunking strategies for better retrieval</p>
                     </div>
                     <div class="task-card">
-                        <h4>📊 X-Ray Implementation</h4>
-                        <p>Enabled X-Ray tracing for API Gateway, Lambda functions, and Step Functions state machine</p>
+                        <h4>🧠 RAG Implementation</h4>
+                        <p>Implemented end-to-end RAG pipeline with query processing, context retrieval, and response generation</p>
                     </div>
                     <div class="task-card">
-                        <h4>🧪 API Testing</h4>
-                        <p>Tested API endpoints using CLI commands and analyzed trace maps for performance insights</p>
+                        <h4>🔍 Query Testing</h4>
+                        <p>Tested various query types, evaluated response accuracy, and fine-tuned retrieval parameters</p>
                     </div>
                     <div class="task-card">
-                        <h4>🐛 Debugging Excellence</h4>
-                        <p>Identified and resolved Lambda function error using X-Ray traces, demonstrating real-world troubleshooting skills</p>
+                        <h4>⚡ Performance Optimization</h4>
+                        <p>Optimized vector search parameters, improved response relevance, and reduced latency</p>
                     </div>
                 </div>
             </div>
@@ -428,28 +432,28 @@
                 <h2>💡 Skills Demonstrated</h2>
                 <div class="skills-grid">
                     <div class="skill-item">
-                        <h4>🔍 Performance Monitoring</h4>
-                        <p>Distributed system observability</p>
+                        <h4>🤖 AI/ML Engineering</h4>
+                        <p>RAG system implementation</p>
                     </div>
                     <div class="skill-item">
-                        <h4>🐛 Debugging</h4>
-                        <p>Root cause analysis using traces</p>
+                        <h4>📊 Vector Databases</h4>
+                        <p>Semantic search optimization</p>
                     </div>
                     <div class="skill-item">
                         <h4>☁️ AWS Services</h4>
-                        <p>Multi-service integration expertise</p>
+                        <p>Bedrock and AI services expertise</p>
                     </div>
                     <div class="skill-item">
-                        <h4>🏗️ DevOps</h4>
-                        <p>CI/CD and infrastructure automation</p>
+                        <h4>🔍 Information Retrieval</h4>
+                        <p>Document processing and indexing</p>
                     </div>
                     <div class="skill-item">
-                        <h4>🔒 Security</h4>
-                        <p>Authentication and authorization</p>
+                        <h4>💬 NLP</h4>
+                        <p>Language model integration</p>
                     </div>
                     <div class="skill-item">
-                        <h4>📈 Analytics</h4>
-                        <p>Performance optimization insights</p>
+                        <h4>📈 System Optimization</h4>
+                        <p>Performance tuning and testing</p>
                     </div>
                 </div>
             </div>
@@ -457,11 +461,11 @@
 
         <div class="cta-section">
             <h2>🚀 Real-World Impact</h2>
-            <p>This lab demonstrates practical skills in monitoring and debugging distributed systems - essential capabilities for modern cloud applications. The hands-on experience with AWS X-Ray showcases ability to:</p>
+            <p>This lab demonstrates advanced AI/ML skills in building intelligent question-answering systems - crucial for modern enterprise applications. The hands-on experience with RAG showcases ability to:</p>
             <br>
-            <p><span class="highlight">Identify performance bottlenecks</span> • <span class="highlight">Reduce MTTR</span> • <span class="highlight">Improve user experience</span> • <span class="highlight">Optimize costs</span></p>
+            <p><span class="highlight">Build intelligent assistants</span> • <span class="highlight">Improve knowledge access</span> • <span class="highlight">Enhance customer experience</span> • <span class="highlight">Automate support</span></p>
             <br>
-            <a href="home.html" class="cta-button">
+            <a href="../index.html" class="cta-button">
                 🏠 View Home
             </a>
         </div>
@@ -504,6 +508,3 @@
 </body>
 
 </html>
-
-
-
