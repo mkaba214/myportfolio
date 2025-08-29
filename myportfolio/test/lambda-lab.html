@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Lambda Function Lab</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header { background: #232f3e; color: white; text-align: center; padding: 2rem; margin-bottom: 2rem; }
+        .lab-section { background: white; padding: 2rem; margin-bottom: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .skill-card { background: #e8f4fd; padding: 1rem; border-radius: 5px; border-left: 4px solid #ff9900; }
+        .code-block { background: #2d3748; color: #e2e8f0; padding: 1rem; border-radius: 5px; overflow-x: auto; margin: 1rem 0; }
+        .highlight { color: #ff9900; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AWS Lambda Function Lab</h1>
+            <p>Serverless Computing Skills Showcase</p>
+        </header>
+
+        <div class="lab-section">
+            <h2>Lab Overview</h2>
+            <p>This lab demonstrates proficiency in AWS Lambda functions, showcasing serverless architecture patterns and event-driven programming.</p>
+        </div>
+
+        <div class="lab-section">
+            <h2>Key Skills Demonstrated</h2>
+            <div class="skill-grid">
+                <div class="skill-card">
+                    <h3>Function Development</h3>
+                    <p>Python/Node.js Lambda functions with proper error handling and logging</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Event Processing</h3>
+                    <p>API Gateway, S3, DynamoDB, and CloudWatch event triggers</p>
+                </div>
+                <div class="skill-card">
+                    <h3>IAM & Security</h3>
+                    <p>Least privilege access policies and secure environment variables</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Performance Optimization</h3>
+                    <p>Cold start reduction and memory/timeout configuration</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>Sample Lambda Function</h2>
+            <div class="code-block">
+import json
+import boto3
+from datetime import datetime
+
+def lambda_handler(event, context):
+    try:
+        # Process incoming event
+        body = json.loads(event['body']) if 'body' in event else event
+        
+        # Business logic here
+        result = {
+            'timestamp': datetime.utcnow().isoformat(),
+            'processed': True,
+            'data': body
+        }
+        
+        return {
+            'statusCode': 200,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps(result)
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+            </div>
+        </div>
+
+        <div class="lab-section">
+            <h2>Architecture Highlights</h2>
+            <ul>
+                <li><span class="highlight">Serverless:</span> No server management required</li>
+                <li><span class="highlight">Scalable:</span> Automatic scaling based on demand</li>
+                <li><span class="highlight">Cost-effective:</span> Pay only for execution time</li>
+                <li><span class="highlight">Event-driven:</span> Responds to various AWS service triggers</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
