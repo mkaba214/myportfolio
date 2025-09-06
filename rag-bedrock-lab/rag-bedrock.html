@@ -212,18 +212,23 @@
         }
 
         .service-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a202c;
+            border: 1px solid rgba(52, 152, 219, 0.2);
             padding: 1rem;
             border-radius: 10px;
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .service-card:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-color: rgba(52, 152, 219, 0.4);
         }
 
         .service-card h4 {
+            color: #2d3748;
             margin-bottom: 0.75rem;
             font-size: 1.25rem;
             font-weight: 700;
