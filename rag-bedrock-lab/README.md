@@ -4,6 +4,11 @@
 
 This lab demonstrates the implementation of Retrieval-Augmented Generation (RAG) using Amazon Bedrock Knowledge Bases. The solution combines the power of large language models with enterprise knowledge bases to create intelligent question-answering systems that provide accurate, contextual responses based on proprietary data.
 
+### 🏗️ System Architecture
+![RAG Implementation Flow](screenshots/kb-lab-flow.png)
+
+*Complete end-to-end RAG architecture demonstrating document ingestion, vector embedding generation, knowledge base storage, semantic search, and contextual response generation using Amazon Bedrock foundation models and OpenSearch serverless vector database.*
+
 ## 🛠️ Skills Demonstrated
 
 ### **AI/ML & Generative AI**
@@ -102,9 +107,12 @@ This lab demonstrates the implementation of Retrieval-Augmented Generation (RAG)
    - Implement usage analytics
    - Configure alerting for system health
 
-## 🖼️ Lab Screenshots
+## 🖼️ Lab Screenshots & Architecture Diagrams
 
-*Note: Screenshots are stored in the `/screenshots` directory for organized documentation*
+*Note: Screenshots and diagrams are stored in the `/screenshots` directory for organized documentation*
+
+### System Architecture
+- **[`kb-lab-flow.png`](screenshots/kb-lab-flow.png)** - Complete RAG implementation flow diagram showing the end-to-end process from document ingestion through vector embedding, knowledge base storage, semantic search, and contextual response generation using Amazon Bedrock foundation models
 
 ### Architecture & Setup
 - **System Architecture**: Complete RAG implementation architecture
@@ -255,10 +263,12 @@ rag-bedrock-lab/
 ├── rag-bedrock.html            # Lab presentation page
 ├── style.css                   # Custom styling for presentation
 ├── code/                        # Complete source code directory
-│   └── rag_implementation.py    # Full RAG system implementation with Bedrock
+│   ├── rag_implementation.py    # Full RAG system implementation with Bedrock
+│   └── retrieve-generate.py     # Simple retrieve and generate demonstration script
 └── screenshots/                 # Visual documentation directory
     ├── README.md               # Screenshots organization guide
-    └── [screenshot-files]      # Implementation screenshots
+    ├── kb-lab-flow.png         # Complete RAG architecture flow diagram
+    └── [other-screenshots]     # Additional implementation screenshots
 ```
 
 ## 💻 Source Code
@@ -266,6 +276,8 @@ rag-bedrock-lab/
 The complete RAG implementation is available in the [`code/`](code/) directory:
 
 - **[`rag_implementation.py`](code/rag_implementation.py)** - Production-ready RAG system with Amazon Bedrock Knowledge Bases, including advanced query processing, context building, response generation, and knowledge base management utilities
+
+- **[`retrieve-generate.py`](code/retrieve-generate.py)** - Simple demonstration script showing basic retrieve and generate functionality using Amazon Bedrock Agent Runtime service with Knowledge Base ID and Foundation Model integration
 
 ## 🔧 Technical Requirements
 
