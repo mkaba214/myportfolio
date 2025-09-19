@@ -1,0 +1,55 @@
+# GitHub Pages Jekyll Configuration
+# ================================
+# This file controls what content is excluded from GitHub Pages build
+# making specified files and directories invisible to site visitors
+
+# Exclude files and directories from GitHub Pages build
+exclude:
+  - "*.py"                    # Python test scripts
+  - robots.txt               # Search engine control file
+  - template.json            # Configuration template
+  - README.md                # Project documentation
+  - .gitignore              # Git ignore file
+  - .private-files          # Private files documentation
+  - ACCESS-CONTROL.md       # Access control documentation
+  - besttodo.txt            # Todo instructions file
+  - home.html               # Personal portfolio page
+  - myphoto.jpeg            # Personal photo
+  - style.css               # Main styling file
+  - main-style.css          # Additional styling
+
+# Additional Jekyll settings for better GitHub Pages control
+plugins:
+  - jekyll-relative-links
+
+# Markdown processing
+markdown: kramdown
+highlighter: rouge
+
+# Site settings (optional - for better SEO of lab pages)
+title: "Mohamed Adama Kaba - AWS Labs Portfolio"
+description: "Professional AWS and DevOps lab implementations showcasing cloud architecture, AI/ML integration, and CI/CD best practices."
+url: "https://mkaba214.github.io"
+baseurl: "/myportfolio"
+
+# Collections for lab organization (optional advanced feature)
+collections:
+  labs:
+    output: true
+    permalink: /:collection/:name/
+
+# Default layout and metadata
+defaults:
+  - scope:
+      path: ""
+      type: "labs"
+    values:
+      layout: "lab"
+      author: "Mohamed Adama Kaba"
+
+# Keep lab directories accessible
+include:
+  - amazon-textract-polly-lab
+  - x-ray-lab
+  - rag-bedrock-lab
+  - capstone-project
