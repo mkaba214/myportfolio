@@ -1,0 +1,39 @@
+# Amazon Textract & Polly Lambda Function Dependencies
+# =======================================================
+
+# AWS SDK for Python - Core library for AWS service integration
+boto3>=1.26.0
+
+# AWS Core library (automatically installed with boto3)
+botocore>=1.29.0
+
+# Optional dependencies for enhanced functionality
+# ------------------------------------------------
+
+# For JSON schema validation (if implementing input validation)
+jsonschema>=4.0.0
+
+# For enhanced logging and monitoring
+structlog>=22.0.0
+
+# For type checking support (development)
+typing-extensions>=4.0.0
+
+# For handling different document formats (if extending functionality)
+Pillow>=9.0.0
+
+# For configuration management
+python-decouple>=3.6
+
+# Production Dependencies
+# -----------------------
+# Note: In Lambda environment, boto3 and botocore are pre-installed
+# Only additional libraries need to be packaged with deployment
+
+# Development Dependencies (not needed in Lambda)
+# -----------------------------------------------
+# pytest>=7.0.0          # For unit testing
+# moto>=4.0.0            # For AWS service mocking in tests
+# black>=22.0.0          # Code formatting
+# flake8>=5.0.0          # Code linting
+# mypy>=0.991            # Type checking

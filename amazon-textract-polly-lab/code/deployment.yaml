@@ -1,0 +1,136 @@
+# AWS Lambda Deployment Configuration
+# ===================================
+# This file contains the deployment configuration for the Textract & Polly Lambda function
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'Amazon Textract & Polly Document Processing Lambda Function'
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: 'S3 bucket name for document storage and audio output'
+    Default: 'textract-polly-demo-bucket'
+
+  VoiceId:
+    Type: String
+    Description: 'Amazon Polly voice ID for speech synthesis'
+    Default: 'Amy'
+    AllowedValues:
+      - Amy
+      - Brian
+      - Emma
+      - Russell
+      - Nicole
+      - Olivia
+      - Aria
+      - Ayanda
+
+Resources:
+  # Lambda Function
+  TextractPollyFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: 'textract-polly-processor'
+      Runtime: python3.9
+      Handler: lambda_function.lambda_handler
+      CodeUri: ./
+      Description: 'Process documents with Textract and convert to speech with Polly'
+      MemorySize: 512
+      Timeout: 300
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref BucketName
+          VOICE_ID: !Ref VoiceId
+          OUTPUT_FORMAT: 'mp3'
+          ENGINE: 'neural'
+
+      # IAM Role and Policies
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref BucketName
+        - S3WritePolicy:
+            BucketName: !Ref BucketName
+        - Statement:
+            - Effect: Allow
+              Action:
+                - textract:DetectDocumentText
+                - textract:AnalyzeDocument
+              Resource: '*'
+        - Statement:
+            - Effect: Allow
+              Action:
+                - polly:StartSpeechSynthesisTask
+                - polly:GetSpeechSynthesisTask
+                - polly:ListSpeechSynthesisTasks
+              Resource: '*'
+        - CloudWatchLogsFullAccess
+
+      # Event triggers
+      Events:
+        S3Upload:
+          Type: S3
+          Properties:
+            Bucket: !Ref DocumentBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: .jpg
+                  - Name: suffix
+                    Value: .jpeg
+                  - Name: suffix
+                    Value: .png
+                  - Name: suffix
+                    Value: .pdf
+
+  # S3 Bucket for documents and audio files
+  DocumentBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Ref BucketName
+      NotificationConfiguration:
+        CloudWatchConfiguration:
+          LogFilePrefix: 'textract-polly-logs/'
+
+      # Bucket policies for security
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+      # Lifecycle configuration
+      LifecycleConfiguration:
+        Rules:
+          - Id: 'DeleteOldAudioFiles'
+            Status: Enabled
+            ExpirationInDays: 30
+            Prefix: 'audio/'
+
+  # CloudWatch Log Group
+  FunctionLogGroup:
+    Type: 'AWS::Logs::LogGroup'
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${TextractPollyFunction}'
+      RetentionInDays: 14
+
+Outputs:
+  FunctionName:
+    Description: 'Name of the Lambda function'
+    Value: !Ref TextractPollyFunction
+    Export:
+      Name: !Sub '${AWS::StackName}-FunctionName'
+
+  BucketName:
+    Description: 'Name of the S3 bucket'
+    Value: !Ref DocumentBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-BucketName'
+
+  FunctionArn:
+    Description: 'ARN of the Lambda function'
+    Value: !GetAtt TextractPollyFunction.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-FunctionArn'

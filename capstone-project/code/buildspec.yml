@@ -1,0 +1,151 @@
+# AWS CodeBuild Build Specification
+# =================================
+# This buildspec.yml file defines the build process for the Django web application
+# in the AWS DevOps Capstone Project CI/CD pipeline.
+
+version: 0.2
+
+# Environment variables for the build
+env:
+  variables:
+    # Python runtime configuration
+    PYTHON_VERSION: "3.9"
+    PIP_CACHE_DIR: "/tmp/pip-cache"
+
+    # Django application settings
+    DJANGO_SETTINGS_MODULE: "myproject.settings.production"
+    SECRET_KEY: "build-time-secret-key"
+    DEBUG: "False"
+
+    # Database configuration for testing
+    DATABASE_URL: "sqlite:///test_db.sqlite3"
+
+    # Container image configuration
+    IMAGE_REPO_NAME: "django-app"
+    IMAGE_TAG: "latest"
+    AWS_DEFAULT_REGION: "us-east-1"
+    AWS_ACCOUNT_ID: "123456789012"  # Replace with actual account ID
+
+  # Parameter store variables (for sensitive data)
+  parameter-store:
+    DOCKER_REGISTRY_URL: "/codebuild/docker-registry-url"
+    ECR_REPOSITORY_URI: "/codebuild/ecr-repository-uri"
+
+# Build phases
+phases:
+  # Pre-build phase: Install dependencies and setup environment
+  pre_build:
+    commands:
+      - echo "Starting pre-build phase..."
+      - echo "Build started on `date`"
+      - echo "Python version:"
+      - python3 --version
+      - echo "Pip version:"
+      - pip3 --version
+
+      # Install Python dependencies
+      - echo "Installing Python dependencies..."
+      - pip3 install --upgrade pip
+      - pip3 install -r requirements.txt
+      - pip3 install pytest pytest-django pytest-cov
+
+      # Setup Django environment
+      - echo "Setting up Django environment..."
+      - python3 manage.py collectstatic --noinput
+      - python3 manage.py migrate --run-syncdb
+
+      # Login to Amazon ECR
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+
+      # Get repository URI
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
+      - echo "Repository URI: $REPOSITORY_URI"
+
+  # Build phase: Run tests and build Docker image
+  build:
+    commands:
+      - echo "Starting build phase..."
+
+      # Run unit tests
+      - echo "Running unit tests..."
+      - python3 manage.py test --verbosity=2 --keepdb
+
+      # Run test coverage analysis
+      - echo "Generating test coverage report..."
+      - pytest --cov=. --cov-report=term --cov-report=html
+
+      # Code quality checks
+      - echo "Running code quality checks..."
+      - flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
+      - flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics || true
+
+      # Security checks
+      - echo "Running security checks..."
+      - bandit -r . -x /tests/ -f json -o bandit-report.json || true
+
+      # Build Docker image
+      - echo "Building Docker image..."
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$CODEBUILD_BUILD_NUMBER
+
+  # Post-build phase: Push image and cleanup
+  post_build:
+    commands:
+      - echo "Starting post-build phase..."
+
+      # Push Docker image to ECR
+      - echo "Pushing Docker image to ECR..."
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push $REPOSITORY_URI:$CODEBUILD_BUILD_NUMBER
+
+      # Create image definitions file for CodePipeline
+      - echo "Creating image definitions file..."
+      - printf '[{"name":"django-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
+
+      # Generate deployment manifest
+      - echo "Generating Kubernetes deployment manifest..."
+      - envsubst < k8s/deployment-template.yaml > k8s/deployment.yaml
+
+      - echo "Build completed on `date`"
+
+# Artifacts to be uploaded to S3
+artifacts:
+  files:
+    - imagedefinitions.json
+    - k8s/deployment.yaml
+    - k8s/service.yaml
+    - coverage.xml
+    - bandit-report.json
+  name: BuildArtifacts-$(date +%Y-%m-%d-%H-%M-%S)
+
+# Cache configuration for faster builds
+cache:
+  paths:
+    - '/tmp/pip-cache/**/*'
+    - '/root/.cache/pip/**/*'
+
+# Reports configuration
+reports:
+  # Unit test reports
+  unittest-reports:
+    files:
+      - 'test-results.xml'
+    file-format: 'JUNITXML'
+    base-directory: '.'
+
+  # Code coverage reports
+  coverage-reports:
+    files:
+      - 'coverage.xml'
+    file-format: 'COBERTURAXML'
+    base-directory: '.'
+
+  # Security scan reports
+  security-reports:
+    files:
+      - 'bandit-report.json'
+    file-format: 'JSON'
+    base-directory: '.'
