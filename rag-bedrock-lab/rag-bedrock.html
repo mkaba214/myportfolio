@@ -479,20 +479,13 @@
                         💻 View Source Code
                     </a>
                 </p>
-                <div class="architecture-images">
-                    <div class="architecture-image">
-                        <h3>Data Ingestion Pipeline</h3>
-                        <div style="background: #ecf0f1; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 2rem; color: #7f8c8d;">
-                            📄 Documents → Vector Embeddings → Knowledge Base Storage
-                        </div>
-                        <p>Documents are processed, vectorized, and stored in the knowledge base for retrieval</p>
-                    </div>
-                    <div class="architecture-image">
-                        <h3>Query Processing Flow</h3>
-                        <div style="background: #ecf0f1; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 2rem; color: #7f8c8d;">
-                            🔍 Query → Vector Search → Context + LLM → Response
-                        </div>
-                        <p>User queries trigger semantic search and generate contextual responses using retrieved knowledge</p>
+                <div class="task-grid">
+                    <div class="task-card" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <img src="screenshots/kb-lab-flow.png" alt="RAG with Amazon Bedrock Knowledge Bases Architecture" style="width: 100%; max-width: 1000px; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); border: 2px solid rgba(52, 152, 219, 0.2);">
+                        <h4 style="margin-top: 1.5rem; color: #1a252f; font-weight: 700; font-size: 1.5rem;">Complete RAG Implementation Flow</h4>
+                        <p style="color: #5a6c7d; font-size: 1rem; margin-top: 1rem; line-height: 1.6;">
+                            End-to-end RAG architecture demonstrating document ingestion, vector embedding generation, knowledge base storage, semantic search, and contextual response generation using Amazon Bedrock foundation models and OpenSearch serverless vector database.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -524,6 +517,40 @@
                         <h4>⚡ Performance Optimization</h4>
                         <p>Optimized vector search parameters, improved response relevance, and reduced latency</p>
                     </div>
+                </div>
+            </div>
+
+            <div class="card code-showcase">
+                <h2><span class="icon">💻</span>Implementation Code</h2>
+                <div class="task-grid">
+                    <div class="task-card">
+                        <h4>📄 rag_implementation.py</h4>
+                        <p>Complete RAG system implementation with vector search, context retrieval, and response generation using Amazon Bedrock Knowledge Bases</p>
+                        <div style="margin-top: 1rem;">
+                            <a href="https://github.com/mkaba214/myportfolio/blob/main/rag-bedrock-lab/code/rag_implementation.py" target="_blank" rel="noopener noreferrer" style="color: #27ae60; text-decoration: none; font-weight: 600;">
+                                🔗 View Full Implementation
+                            </a>
+                        </div>
+                    </div>
+                    <div class="task-card">
+                        <h4>🔍 retrieve-generate.py</h4>
+                        <p>Simple retrieve and generate script demonstrating basic RAG functionality with Knowledge Base ID and Foundation Model integration</p>
+                        <div style="margin-top: 1rem;">
+                            <a href="https://github.com/mkaba214/myportfolio/blob/main/rag-bedrock-lab/code/retrieve-generate.py" target="_blank" rel="noopener noreferrer" style="color: #27ae60; text-decoration: none; font-weight: 600;">
+                                🔗 View Script
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(52, 152, 219, 0.1); border-radius: 10px; border-left: 4px solid #3498db;">
+                    <h4 style="color: #2980b9; margin-bottom: 1rem;">🛠️ Code Features</h4>
+                    <ul style="color: #5a6c7d; line-height: 1.8;">
+                        <li><strong>Production-ready:</strong> Comprehensive error handling, logging, and type hints</li>
+                        <li><strong>Modular design:</strong> Reusable classes and functions for different RAG components</li>
+                        <li><strong>AWS Integration:</strong> Boto3 SDK usage with proper IAM and service configuration</li>
+                        <li><strong>Query optimization:</strong> Advanced retrieval parameters and response filtering</li>
+                        <li><strong>Documentation:</strong> Detailed docstrings and implementation comments</li>
+                    </ul>
                 </div>
             </div>
 
