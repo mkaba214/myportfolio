@@ -17,6 +17,7 @@ exclude:
   - myphoto.jpeg            # Personal photo
   - style.css               # Main styling file
   - main-style.css          # Additional styling
+  - labs.html               # Lab directory page (button access only)
 
 # Additional Jekyll settings for better GitHub Pages control
 plugins:
