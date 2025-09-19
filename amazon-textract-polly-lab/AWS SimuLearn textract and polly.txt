@@ -1,0 +1,127 @@
+AWS SimuLearn: Document Handling Using Amazon Textract and Amazon Polly
+
+Description
+AnyCompany Consulting handles a high volume of important client documents daily. The current manual processing of these documents is tedious, inefficient, prone to human error, and makes it difficult to quickly access key information. AnyCompany is looking for ways to streamline document processing to improve efficiency and accessibility. To accomplish this, AnyCompany wants to use AI services on AWS, such as Amazon Textract and Amazon Polly. Amazon Textract uses machine learning (ML) to automatically extract text, forms, tables, and other data from scanned documents and images. Amazon Polly converts text into lifelike speech.
+
+===========================================
+Conversations
+Jack (Mayor): Hi there, I'm having some issues with our document processing workflow at AnyCompany Consulting. It's becoming increasingly inefficient and error-prone with the high volume of client documents we handle daily.
+
+Me (AWS Cloud Engineer): I understand your concern. Manually processing a large number of documents can be tedious and prone to mistakes. AWS has some AI services that can help streamline your document processing and improve efficiency.
+
+Jack: That sounds promising. What services are you referring to?
+
+Me: Amazon Textract and Amazon Polly can be a great solution for your needs. Amazon Textract uses machine learning to automatically extract text, data, and other information from scanned documents and images. This eliminates the need for manual data entry or editing.
+
+Jack: Wow, that could save us a lot of time and reduce errors. But what about making the documents more accessible for employees on the go?
+
+Me: That's where Amazon Polly comes in. It's a text-to-speech service that can convert the extracted text from Textract into natural-sounding speech. Your employees can listen to audio versions of documents while commuting or multitasking.
+
+Jack: I see, that's really convenient. How would we implement this solution?
+
+Me: First, we'd set up an Amazon S3 bucket to store your documents. Then, we'd use Textract to extract text and data from the documents in the S3 bucket. The extracted text would be passed to Polly, which would generate an audio file in a format like MP3. This audio file can be stored back in S3 for your employees to access.
+
+Jack: That makes sense. But how would we automate this process for our daily document influx?
+
+Me: We can use AWS Lambda, a serverless computing service, to run the Textract and Polly operations automatically whenever a new document is uploaded to the S3 bucket. Lambda functions can be triggered by S3 events, so the entire process would be seamless and scalable.
+
+Jack: Excellent, this solution seems to address all our pain points. Let's move forward with implementing it. Thank you for your help!
+
+Me: Let's do it!
+
+===========================================
+Technical Annotations
+
+1. Extract text from images by using Amazon Textract.
+2. Convert text to speech by using Amazon Polly.
+3. Use AWS Lambda to automate the process.
+
+===========================================
+Solution Request
+Run the TextToSpeech Lambda function to automatically extract text from an image file and convert it to an audio file.
+
+Step 1: This solution uses Amazon Textract to extract text from an image file stored in Amazon Simple Storage Service (Amazon S3).
+Step 2: Amazon Polly is used to convert the extracted text into lifelike speech. The output MP3 file is sent to Amazon S3.
+Step 3: An AWS Lambda function is used to automate the call to the Boto3 APIs: detect_document_text and start_speech_synthesis_task.
+Step 4: To test the process, verify the S3 bucket location of the generated MP3 file, and listen to the audio.
+
+===========================================
+Concept
+In this practice lab, you will:
+- Extract and view raw text from a sample document.
+- Convert the text into the MP3 audio format.
+- Run an AWS Lambda function to convert an image file that contains text to an audio MP3 file.
+
+Practice Lab Goals
+Extract and view raw text from a sample document.
+Convert the text into the MP3 audio format.
+Run an AWS Lambda function to convert an image file that contains text to an audio MP3 file.
+
+===========================================
+Concept
+In this practice lab, you will:
+- Extract and view raw text from a sample document.
+- Convert the text into the MP3 audio format.
+- Run an AWS Lambda function to convert an image file that contains text to an audio MP3 file.
+
+Step 1: 
+1. Review the practice lab objectives in the Concept section.
+2. Click Start Lab or Open AWS Console to begin.
+3. Follow the lab instructions carefully, and use the arrows below to navigate between steps.
+
+AWS services not used in this lab are disabled in the lab environment. In addition, the capabilities of the services used in this lab are limited to what the lab requires.
+
+Step 2:
+1. Navigate to the Amazon Textract console.
+2. In the left navigation pane, click Analyze Document.
+3. On the Analyze Document page, to review the extracted information in various forms, click the different tabs.
+4. Go to the next step.
+
+Step
+3
+1. Navigate to the Amazon Polly console.
+2. In the left navigation pane, click Text-to-Speech.
+3. Below Text-to-Speech, review the capability to view a history of completed S3 synthesis tasks.
+
+- In the later DIY section of this solution, you will need to confirm that at least one completed S3 synthesis task (using the generative voice ID, Ruth) exists.
+
+4. In the Text-to-Speech section, click Listen.
+5. Go to the next step.
+
+Step
+4
+1. Navigate to the Amazon S3 console.
+2. On the General purpose buckets tab, click the S3 bucket name that starts with labdatabucket-.
+3. Go to the next step.
+
+Step
+5
+1. On the Objects tab, review the provided sample JPEG file.
+
+- The file is provided for the purpose of this lab.
+- In the later DIY section, you need to confirm that at least one MP3 file exists in this S3 bucket. 
+
+2. Go to the next step.
+
+Step
+6
+1. Navigate to the AWS Lambda console.
+2. In the left navigation pane, click Functions.
+3. In the Functions section, click the TextToSpeech function name.
+4. Go to the next step.
+
+Step
+7
+1. Scroll down to the Code source section (not shown).
+2. On the Code tab, in the lambda_function.py window, review line 4.
+
+- This line of code uses an environment variable to obtain the name of the provisioned S3 bucket.
+
+3. Review the rest of the code. 
+
+- On lines 12 and 29 respectively, note the use of the detect_document_text and start_speech_synthesis_task API calls. Also, note the option to change VoiceID and Engine parameters in start_speech_synthesis_task.
+
+4. Click the Test tab.
+5. Go to the next step.
+
+

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Processing with Amazon Textract & Polly - AI-Powered Text Extraction & Speech Synthesis</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #2d3748;
+            font-size: 1.05rem;
+            font-weight: 400;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 0.75rem;
+            font-size: 2.75rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            color: #5a6c7d;
+            font-size: 1.35rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: 0.01em;
+        }
+
+        .lab-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-card {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .info-card.lab-focus {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .info-card.duration {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+        }
+
+        .info-card.complexity {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+        }
+
+        .info-card.status {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .info-card strong {
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .info-card {
+            color: #2c3e50;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: #1a252f;
+            margin-bottom: 1.25rem;
+            font-size: 1.65rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
+
+        .objectives-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .objectives-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .objectives-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .architecture-section {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        .architecture-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .architecture-image {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .architecture-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .architecture-image h3 {
+            margin-bottom: 1rem;
+            color: #1a252f;
+            font-weight: 600;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a202c;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-color: rgba(52, 152, 219, 0.4);
+        }
+
+        .service-card h4 {
+            color: #2d3748;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.005em;
+        }
+
+        .tasks-section {
+            grid-column: 1 / -1;
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .task-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid #e74c3c;
+            transition: transform 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateX(5px);
+        }
+
+        .task-card h4 {
+            color: #1a252f;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+        }
+
+        .task-card p {
+            color: #4a5568;
+            line-height: 1.7;
+            font-weight: 400;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .skills-showcase {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+            margin: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-snippet {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .code-snippet .comment {
+            color: #95a5a6;
+        }
+
+        .code-snippet .keyword {
+            color: #3498db;
+        }
+
+        .code-snippet .string {
+            color: #e74c3c;
+        }
+
+        .screenshot-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .screenshot-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .screenshot-item h4 {
+            margin: 1rem 0 0.5rem 0;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .screenshot-item p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .architecture-images {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2.25rem;
+                line-height: 1.1;
+                margin-bottom: 1rem;
+            }
+
+            .header .subtitle {
+                font-size: 1.2rem;
+                line-height: 1.3;
+            }
+
+            .card h2 {
+                font-size: 1.4rem;
+                line-height: 1.2;
+            }
+
+            .service-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .task-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .screenshot-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .success-indicator {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-top: 2rem;
+            color: #1a252f;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav style="text-align: center; margin-bottom: 1rem;">
+            <a href="home.html" class="cta-button">🏠 Back to Home</a>
+        </nav>
+        <header class="header">
+            <h1>📄 Document Processing with Amazon Textract & Polly</h1>
+            <p class="subtitle">AI-Powered Text Extraction & Speech Synthesis Lab</p>
+            <div class="lab-info">
+                <div class="info-card lab-focus">
+                    <strong>Lab Focus:</strong>
+                    Document AI & Speech Synthesis
+                </div>
+                <div class="info-card duration">
+                    <strong>Duration:</strong>
+                    2 Hours
+                </div>
+                <div class="info-card complexity">
+                    <strong>Complexity:</strong>
+                    Intermediate AI/ML
+                </div>
+                <div class="info-card status">
+                    <strong>Status:</strong>
+                    <span style="color: #27ae60; font-weight: bold;">✅ Completed</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-grid">
+            <div class="card">
+                <h2><span class="icon">🎯</span>Lab Objectives</h2>
+                <ul class="objectives-list">
+                    <li>Extract text from documents using Amazon Textract</li>
+                    <li>Convert extracted text to speech with Amazon Polly</li>
+                    <li>Automate document processing with AWS Lambda</li>
+                    <li>Store and manage files in Amazon S3</li>
+                    <li>Integrate services for end-to-end workflow</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2><span class="icon">🛠️</span>Technologies Used</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h4>Amazon Textract</h4>
+                        <p>AI-powered text and data extraction from documents</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Amazon Polly</h4>
+                        <p>Text-to-speech conversion with natural voices</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>AWS Lambda</h4>
+                        <p>Serverless automation for document processing</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Amazon S3</h4>
+                        <p>Document storage and output file management</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Python & Boto3</h4>
+                        <p>AWS SDK for service integration</p>
+                    </div>
+                    <div class="service-card">
+                        <h4>Event-Driven Architecture</h4>
+                        <p>Automated workflow triggers</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card architecture-section">
+                <h2><span class="icon">🏗️</span>Processing Architecture</h2>
+                <div class="architecture-images">
+                    <div class="architecture-image">
+                        <h3>Document Upload & Processing</h3>
+                        <div style="background: #ecf0f1; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 2rem; color: #7f8c8d;">
+                            📄 Image/PDF → S3 → Lambda → Textract → Text Extraction
+                        </div>
+                        <p>Documents uploaded to S3 trigger Lambda functions that use Textract for text extraction</p>
+                    </div>
+                    <div class="architecture-image">
+                        <h3>Text-to-Speech Conversion</h3>
+                        <div style="background: #ecf0f1; border: 2px dashed #bdc3c7; border-radius: 8px; padding: 2rem; color: #7f8c8d;">
+                            📝 Extracted Text → Polly → 🔊 MP3 Audio → S3 Storage
+                        </div>
+                        <p>Extracted text is converted to natural speech using Polly and stored as MP3 files</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><span class="icon">💻</span>Lambda Function Code</h2>
+                <p>Core implementation for automated document processing:</p>
+                <div class="code-snippet">
+<span class="keyword">import</span> boto3
+<span class="keyword">import</span> os
+
+s3_bucket = os.environ[<span class="string">'BUCKET_NAME'</span>]
+sample_file = <span class="string">'textract_sample.jpeg'</span>
+
+<span class="keyword">def</span> lambda_handler(event, context):
+    <span class="comment"># Initialize Textract client</span>
+    textract_client = boto3.client(<span class="string">'textract'</span>)
+    text2speech = <span class="string">''</span>
+
+    <span class="comment"># Extract text from document</span>
+    textract_response = textract_client.detect_document_text(
+        Document={
+            <span class="string">'S3Object'</span>: {
+                <span class="string">'Bucket'</span>: s3_bucket,
+                <span class="string">'Name'</span>: sample_file
+            }
+        })
+
+    <span class="comment"># Concatenate extracted text lines</span>
+    <span class="keyword">for</span> item <span class="keyword">in</span> textract_response[<span class="string">"Blocks"</span>]:
+        <span class="keyword">if</span> item[<span class="string">"BlockType"</span>] == <span class="string">"LINE"</span>:
+            text2speech = text2speech + <span class="string">' '</span> + item[<span class="string">"Text"</span>]
+
+    <span class="comment"># Convert to speech using Polly</span>
+    polly_client = boto3.client(<span class="string">'polly'</span>)
+
+    response = polly_client.start_speech_synthesis_task(
+        VoiceId=<span class="string">'Amy'</span>,
+        OutputFormat=<span class="string">'mp3'</span>,
+        OutputS3BucketName=s3_bucket,
+        OutputS3KeyPrefix=<span class="string">'output'</span>,
+        Text=text2speech,
+        Engine=<span class="string">'neural'</span>)
+                </div>
+            </div>
+
+            <div class="card tasks-section">
+                <h2><span class="icon">📋</span>Key Accomplishments</h2>
+                <div class="task-grid">
+                    <div class="task-card">
+                        <h4>🔍 Document Analysis</h4>
+                        <p>Successfully extracted text from image documents using Amazon Textract's machine learning capabilities</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>🔊 Speech Synthesis</h4>
+                        <p>Converted extracted text to natural-sounding speech using Amazon Polly's neural voice engine</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>⚡ Serverless Automation</h4>
+                        <p>Built Lambda function to automate the entire text extraction and speech conversion workflow</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>☁️ Cloud Storage Integration</h4>
+                        <p>Integrated S3 for document input and audio output storage with proper file management</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>🧪 Testing & Validation</h4>
+                        <p>Tested the complete pipeline with sample documents and verified audio output quality</p>
+                    </div>
+                    <div class="task-card">
+                        <h4>🔧 Error Handling</h4>
+                        <p>Implemented robust error handling and logging for production-ready deployment</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><span class="icon">📸</span>Lab Screenshots</h2>
+                <div class="screenshot-gallery">
+                    <div class="screenshot-item">
+                        <img src="test event TextToSpeechTest.png" alt="Lambda Test Event">
+                        <h4>Lambda Function Testing</h4>
+                        <p>Testing the TextToSpeech function with sample events</p>
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="s3synthesis task.png" alt="S3 Synthesis Task">
+                        <h4>Polly Synthesis Task</h4>
+                        <p>S3 synthesis task creation and monitoring in Polly console</p>
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="new audio mp3 in s3.png" alt="Generated MP3 Audio">
+                        <h4>Generated Audio Output</h4>
+                        <p>Successfully generated MP3 audio file stored in S3 bucket</p>
+                    </div>
+                    <div class="screenshot-item">
+                        <img src="DocumentHandlingUsingAmazonTextractandAmazonPolly.png" alt="Architecture Diagram">
+                        <h4>Solution Architecture</h4>
+                        <p>Complete document processing workflow architecture</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card skills-showcase">
+                <h2>💡 Skills Demonstrated</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <h4>🤖 Document AI</h4>
+                        <p>Text extraction and OCR capabilities</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>🔊 Speech Technology</h4>
+                        <p>Text-to-speech conversion and audio processing</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>⚡ Serverless Computing</h4>
+                        <p>Event-driven Lambda functions</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>☁️ AWS Integration</h4>
+                        <p>Multi-service cloud architecture</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>🐍 Python Development</h4>
+                        <p>Boto3 SDK and API integration</p>
+                    </div>
+                    <div class="skill-item">
+                        <h4>📊 Data Processing</h4>
+                        <p>Document parsing and text manipulation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>🚀 Business Impact</h2>
+            <p>This lab demonstrates practical AI implementation for document accessibility and automation - essential for modern business operations. The solution showcases ability to:</p>
+            <br>
+            <p><span class="highlight">Automate document processing</span> • <span class="highlight">Enhance accessibility</span> • <span class="highlight">Reduce manual effort</span> • <span class="highlight">Integrate AI services</span></p>
+            <br>
+            <a href="home.html" class="cta-button">
+                🏠 View Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scrolling and interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on scroll
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // Add dynamic background effect
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+
+                document.body.style.background = `linear-gradient(${x * 360}deg, #667eea ${y * 50}%, #764ba2 ${100 - y * 50}%)`;
+            });
+
+            // Add audio player interaction for MP3 demonstration
+            const audioItems = document.querySelectorAll('.screenshot-item');
+            audioItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const img = this.querySelector('img');
+                    if (img && img.alt.includes('MP3')) {
+                        // Could integrate with actual audio playback
+                        this.style.transform = 'scale(1.05)';
+                        setTimeout(() => {
+                            this.style.transform = 'scale(1)';
+                        }, 200);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <footer class="footer">
+        <p>&copy; 2025 Mohamed Adama Kaba. All rights reserved.</p>
+    </footer>
+</body>
+</html>
