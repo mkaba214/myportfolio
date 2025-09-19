@@ -563,57 +563,6 @@
                 </div>
             </div>
 
-            <div class="card">
-                <h2><span class="icon">💻</span>Lambda Function Code</h2>
-                <p>Core implementation for automated document processing:</p>
-                <div class="code-snippet">
-<span class="keyword">import</span> <span class="variable">boto3</span>
-<span class="keyword">import</span> <span class="variable">os</span>
-
-<span class="comment"># Environment configuration</span>
-<span class="variable">s3_bucket</span> = <span class="variable">os</span>.<span class="method">environ</span>[<span class="string">'BUCKET_NAME'</span>]
-<span class="variable">sample_file</span> = <span class="string">'textract_sample.jpeg'</span>
-
-<span class="keyword">def</span> <span class="function">lambda_handler</span>(<span class="variable">event</span>, <span class="variable">context</span>):
-    <span class="comment"># Initialize AWS service clients</span>
-    <span class="variable">textract_client</span> = <span class="variable">boto3</span>.<span class="method">client</span>(<span class="string">'textract'</span>)
-    <span class="variable">text2speech</span> = <span class="string">''</span>
-
-    <span class="comment"># Extract text from document using Textract</span>
-    <span class="variable">textract_response</span> = <span class="variable">textract_client</span>.<span class="method">detect_document_text</span>(
-        <span class="variable">Document</span>={
-            <span class="string">'S3Object'</span>: {
-                <span class="string">'Bucket'</span>: <span class="variable">s3_bucket</span>,
-                <span class="string">'Name'</span>: <span class="variable">sample_file</span>
-            }
-        }
-    )
-
-    <span class="comment"># Process extracted text blocks</span>
-    <span class="keyword">for</span> <span class="variable">item</span> <span class="keyword">in</span> <span class="variable">textract_response</span>[<span class="string">"Blocks"</span>]:
-        <span class="keyword">if</span> <span class="variable">item</span>[<span class="string">"BlockType"</span>] == <span class="string">"LINE"</span>:
-            <span class="variable">text2speech</span> = <span class="variable">text2speech</span> + <span class="string">' '</span> + <span class="variable">item</span>[<span class="string">"Text"</span>]
-
-    <span class="method">print</span>(<span class="variable">text2speech</span>)  <span class="comment"># Log extracted text</span>
-
-    <span class="comment"># Convert text to speech using Amazon Polly</span>
-    <span class="variable">polly_client</span> = <span class="variable">boto3</span>.<span class="method">client</span>(<span class="string">'polly'</span>)
-
-    <span class="variable">response</span> = <span class="variable">polly_client</span>.<span class="method">start_speech_synthesis_task</span>(
-        <span class="variable">VoiceId</span>=<span class="string">'Amy'</span>,
-        <span class="variable">OutputFormat</span>=<span class="string">'mp3'</span>,
-        <span class="variable">OutputS3BucketName</span>=<span class="variable">s3_bucket</span>,
-        <span class="variable">OutputS3KeyPrefix</span>=<span class="string">'output'</span>,
-        <span class="variable">Text</span>=<span class="variable">text2speech</span>,
-        <span class="variable">Engine</span>=<span class="string">'neural'</span>
-    )
-
-    <span class="keyword">return</span> {
-        <span class="string">'statusCode'</span>: <span class="number">200</span>,
-        <span class="string">'body'</span>: <span class="string">'Speech synthesis task started successfully'</span>
-    }
-                </div>
-            </div>
 
             <div class="card tasks-section">
                 <h2><span class="icon">📋</span>Key Accomplishments</h2>
@@ -646,36 +595,22 @@
             </div>
 
             <div class="card">
-                <h2><span class="icon">📸</span>Lab Screenshots</h2>
+                <h2><span class="icon">🏗️</span>Solution Architecture</h2>
                 <p style="margin-bottom: 1rem;">
-                    <a href="screenshots/" style="color: #3498db; text-decoration: none; font-weight: 600;">
+                    <a href="https://github.com/mkaba214/myportfolio/tree/main/amazon-textract-polly-lab/screenshots" target="_blank" rel="noopener noreferrer" style="color: #3498db; text-decoration: none; font-weight: 600;">
                         📁 View All Screenshots Directory
                     </a> |
-                    <a href="README.md" style="color: #e74c3c; text-decoration: none; font-weight: 600;">
+                    <a href="https://github.com/mkaba214/myportfolio/tree/main/amazon-textract-polly-lab" target="_blank" rel="noopener noreferrer" style="color: #e74c3c; text-decoration: none; font-weight: 600;">
                         📋 View Complete Lab Documentation
+                    </a> |
+                    <a href="https://github.com/mkaba214/myportfolio/tree/main/amazon-textract-polly-lab/code" target="_blank" rel="noopener noreferrer" style="color: #27ae60; text-decoration: none; font-weight: 600;">
+                        💻 View Source Code
                     </a>
                 </p>
-                <div class="screenshot-gallery">
-                    <div class="screenshot-item">
-                        <img src="screenshots/test event TextToSpeechTest.png" alt="Lambda Test Event">
-                        <h4>Lambda Function Testing</h4>
-                        <p>Testing the TextToSpeech function with sample events</p>
-                    </div>
-                    <div class="screenshot-item">
-                        <img src="screenshots/s3synthesis task.png" alt="S3 Synthesis Task">
-                        <h4>Polly Synthesis Task</h4>
-                        <p>S3 synthesis task creation and monitoring in Polly console</p>
-                    </div>
-                    <div class="screenshot-item">
-                        <img src="screenshots/new audio mp3 in s3.png" alt="Generated MP3 Audio">
-                        <h4>Generated Audio Output</h4>
-                        <p>Successfully generated MP3 audio file stored in S3 bucket</p>
-                    </div>
-                    <div class="screenshot-item">
-                        <img src="screenshots/DocumentHandlingUsingAmazonTextractandAmazonPolly.png" alt="Architecture Diagram">
-                        <h4>Solution Architecture</h4>
-                        <p>Complete document processing workflow architecture</p>
-                    </div>
+                <div style="text-align: center; margin: 2rem 0;">
+                    <img src="screenshots/DocumentHandlingUsingAmazonTextractandAmazonPolly.png" alt="Complete Document Processing Architecture" style="width: 100%; max-width: 800px; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+                    <h3 style="margin-top: 1rem; color: #1a252f; font-weight: 600;">Complete Document Processing Workflow</h3>
+                    <p style="color: #7f8c8d; font-size: 0.9rem; margin-top: 0.5rem;">End-to-end architecture showing document upload, text extraction with Textract, and speech synthesis with Polly</p>
                 </div>
             </div>
 
