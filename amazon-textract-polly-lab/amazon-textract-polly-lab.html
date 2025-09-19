@@ -175,7 +175,6 @@
 
         .architecture-section {
             grid-column: 1 / -1;
-            text-align: center;
         }
 
         .architecture-images {
@@ -607,12 +606,14 @@
                         💻 View Source Code
                     </a>
                 </p>
-                <div style="text-align: center; margin: 3rem 0; padding: 2rem;">
-                    <img src="screenshots/DocumentHandlingUsingAmazonTextractandAmazonPolly.png" alt="Complete Document Processing Architecture" style="width: 100%; max-width: 1200px; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); border: 2px solid rgba(52, 152, 219, 0.2);">
-                    <h3 style="margin-top: 2rem; color: #1a252f; font-weight: 700; font-size: 1.8rem;">Complete Document Processing Workflow</h3>
-                    <p style="color: #5a6c7d; font-size: 1.1rem; margin-top: 1rem; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-                        End-to-end serverless architecture demonstrating automated document processing: S3 document upload triggers Lambda execution, Amazon Textract extracts text using advanced OCR capabilities, and Amazon Polly converts the extracted text to natural speech using neural voice synthesis, with the resulting MP3 audio stored back in S3 for accessibility and distribution.
-                    </p>
+                <div class="task-grid">
+                    <div class="task-card" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <img src="screenshots/DocumentHandlingUsingAmazonTextractandAmazonPolly.png" alt="Complete Document Processing Architecture" style="width: 100%; max-width: 1000px; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); border: 2px solid rgba(52, 152, 219, 0.2);">
+                        <h4 style="margin-top: 1.5rem; color: #1a252f; font-weight: 700; font-size: 1.5rem;">Complete Document Processing Workflow</h4>
+                        <p style="color: #5a6c7d; font-size: 1rem; margin-top: 1rem; line-height: 1.6;">
+                            End-to-end serverless architecture demonstrating automated document processing: S3 document upload triggers Lambda execution, Amazon Textract extracts text using advanced OCR capabilities, and Amazon Polly converts the extracted text to natural speech using neural voice synthesis, with the resulting MP3 audio stored back in S3 for accessibility and distribution.
+                        </p>
+                    </div>
                 </div>
             </div>
 
