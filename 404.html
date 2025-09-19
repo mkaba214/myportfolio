@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Labs - Access Restricted</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #ecf0f1;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #bdc3c7;
+        }
+
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .lab-link {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease, background 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .lab-link:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .lab-link h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .lab-link p {
+            font-size: 0.9rem;
+            margin: 0;
+            color: #ecf0f1;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒</h1>
+        <h2>Access to Portfolio Labs Only</h2>
+        <p>
+            This portfolio showcases specific lab projects and implementations.
+            Please access the available lab directories below:
+        </p>
+
+        <div class="labs-grid">
+            <a href="https://github.com/mkaba214/myportfolio/tree/main/amazon-textract-polly-lab" class="lab-link">
+                <h3>📄 Textract & Polly Lab</h3>
+                <p>Document processing with AI</p>
+            </a>
+
+            <a href="https://github.com/mkaba214/myportfolio/tree/main/x-ray-lab" class="lab-link">
+                <h3>📊 AWS X-Ray Lab</h3>
+                <p>Application monitoring & tracing</p>
+            </a>
+
+            <a href="https://github.com/mkaba214/myportfolio/tree/main/rag-bedrock-lab" class="lab-link">
+                <h3>🤖 RAG Bedrock Lab</h3>
+                <p>AI-powered knowledge bases</p>
+            </a>
+
+            <a href="https://github.com/mkaba214/myportfolio/tree/main/capstone-project" class="lab-link">
+                <h3>🎓 DevOps Capstone</h3>
+                <p>CI/CD pipeline implementation</p>
+            </a>
+        </div>
+
+        <p style="font-size: 0.9rem; color: #95a5a6; margin-top: 2rem;">
+            Each lab directory contains comprehensive documentation, source code, and implementation details.
+        </p>
+    </div>
+
+    <script>
+        // Auto-redirect if trying to access main portfolio files
+        const currentPath = window.location.pathname;
+        const restrictedFiles = [
+            '/myportfolio/home.html',
+            '/myportfolio/index.html',
+            '/myportfolio/myphoto.jpeg',
+            '/myportfolio/style.css',
+            '/myportfolio/README.md'
+        ];
+
+        if (restrictedFiles.some(file => currentPath.includes(file))) {
+            console.log('Access to main portfolio files is restricted');
+        }
+    </script>
+</body>
+</html>

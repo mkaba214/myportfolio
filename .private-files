@@ -1,0 +1,34 @@
+# Private Files - Not for Public Access
+# =====================================
+# This file documents which files in the main directory should be
+# considered private and not accessed directly by site visitors.
+
+# Main portfolio files (private access)
+home.html
+myphoto.jpeg
+style.css
+main-style.css
+template.json
+test.py
+README.md
+.nojekyll
+
+# Directories (private access)
+backup/
+test/
+.git/
+
+# Files accessible for site functionality
+index.html           # Redirects to labs.html
+labs.html           # Public lab directory page
+robots.txt          # Search engine instructions
+404.html           # Custom error page
+
+# Public lab subdirectories (these should remain accessible)
+amazon-textract-polly-lab/
+x-ray-lab/
+rag-bedrock-lab/
+capstone-project/
+
+# Note: GitHub Pages doesn't support server-side access control,
+# but this documents the intended privacy structure.

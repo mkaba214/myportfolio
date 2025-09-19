@@ -1,0 +1,32 @@
+# Robots.txt for Portfolio Repository
+# This file controls web crawler access to protect main directory privacy
+
+# Allow access to lab subdirectories only
+User-agent: *
+
+# Disallow main directory files
+Disallow: /home.html
+Disallow: /index.html
+Disallow: /myphoto.jpeg
+Disallow: /style.css
+Disallow: /main-style.css
+Disallow: /template.json
+Disallow: /test.py
+Disallow: /README.md
+Disallow: /.nojekyll
+Disallow: /backup/
+Disallow: /test/
+
+# Allow lab subdirectories (these should be publicly accessible)
+Allow: /amazon-textract-polly-lab/
+Allow: /x-ray-lab/
+Allow: /rag-bedrock-lab/
+Allow: /capstone-project/
+
+# Allow lab subdirectory content
+Allow: /*/README.md
+Allow: /*/screenshots/
+Allow: /*/code/
+
+# Sitemap location (optional)
+# Sitemap: https://mkaba214.github.io/myportfolio/sitemap.xml
