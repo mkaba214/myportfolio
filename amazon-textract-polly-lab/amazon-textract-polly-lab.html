@@ -357,6 +357,22 @@
             color: #e74c3c;
         }
 
+        .code-snippet .function {
+            color: #f39c12;
+        }
+
+        .code-snippet .variable {
+            color: #9b59b6;
+        }
+
+        .code-snippet .number {
+            color: #e67e22;
+        }
+
+        .code-snippet .method {
+            color: #1abc9c;
+        }
+
         .screenshot-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -460,7 +476,7 @@
 <body>
     <div class="container">
         <nav style="text-align: center; margin-bottom: 1rem;">
-            <a href="home.html" class="cta-button">🏠 Back to Home</a>
+            <a href="../home.html" class="cta-button">🏠 Back to Home</a>
         </nav>
         <header class="header">
             <h1>📄 Document Processing with Amazon Textract & Polly</h1>
@@ -551,41 +567,51 @@
                 <h2><span class="icon">💻</span>Lambda Function Code</h2>
                 <p>Core implementation for automated document processing:</p>
                 <div class="code-snippet">
-<span class="keyword">import</span> boto3
-<span class="keyword">import</span> os
+<span class="keyword">import</span> <span class="variable">boto3</span>
+<span class="keyword">import</span> <span class="variable">os</span>
 
-s3_bucket = os.environ[<span class="string">'BUCKET_NAME'</span>]
-sample_file = <span class="string">'textract_sample.jpeg'</span>
+<span class="comment"># Environment configuration</span>
+<span class="variable">s3_bucket</span> = <span class="variable">os</span>.<span class="method">environ</span>[<span class="string">'BUCKET_NAME'</span>]
+<span class="variable">sample_file</span> = <span class="string">'textract_sample.jpeg'</span>
 
-<span class="keyword">def</span> lambda_handler(event, context):
-    <span class="comment"># Initialize Textract client</span>
-    textract_client = boto3.client(<span class="string">'textract'</span>)
-    text2speech = <span class="string">''</span>
+<span class="keyword">def</span> <span class="function">lambda_handler</span>(<span class="variable">event</span>, <span class="variable">context</span>):
+    <span class="comment"># Initialize AWS service clients</span>
+    <span class="variable">textract_client</span> = <span class="variable">boto3</span>.<span class="method">client</span>(<span class="string">'textract'</span>)
+    <span class="variable">text2speech</span> = <span class="string">''</span>
 
-    <span class="comment"># Extract text from document</span>
-    textract_response = textract_client.detect_document_text(
-        Document={
+    <span class="comment"># Extract text from document using Textract</span>
+    <span class="variable">textract_response</span> = <span class="variable">textract_client</span>.<span class="method">detect_document_text</span>(
+        <span class="variable">Document</span>={
             <span class="string">'S3Object'</span>: {
-                <span class="string">'Bucket'</span>: s3_bucket,
-                <span class="string">'Name'</span>: sample_file
+                <span class="string">'Bucket'</span>: <span class="variable">s3_bucket</span>,
+                <span class="string">'Name'</span>: <span class="variable">sample_file</span>
             }
-        })
+        }
+    )
 
-    <span class="comment"># Concatenate extracted text lines</span>
-    <span class="keyword">for</span> item <span class="keyword">in</span> textract_response[<span class="string">"Blocks"</span>]:
-        <span class="keyword">if</span> item[<span class="string">"BlockType"</span>] == <span class="string">"LINE"</span>:
-            text2speech = text2speech + <span class="string">' '</span> + item[<span class="string">"Text"</span>]
+    <span class="comment"># Process extracted text blocks</span>
+    <span class="keyword">for</span> <span class="variable">item</span> <span class="keyword">in</span> <span class="variable">textract_response</span>[<span class="string">"Blocks"</span>]:
+        <span class="keyword">if</span> <span class="variable">item</span>[<span class="string">"BlockType"</span>] == <span class="string">"LINE"</span>:
+            <span class="variable">text2speech</span> = <span class="variable">text2speech</span> + <span class="string">' '</span> + <span class="variable">item</span>[<span class="string">"Text"</span>]
 
-    <span class="comment"># Convert to speech using Polly</span>
-    polly_client = boto3.client(<span class="string">'polly'</span>)
+    <span class="method">print</span>(<span class="variable">text2speech</span>)  <span class="comment"># Log extracted text</span>
 
-    response = polly_client.start_speech_synthesis_task(
-        VoiceId=<span class="string">'Amy'</span>,
-        OutputFormat=<span class="string">'mp3'</span>,
-        OutputS3BucketName=s3_bucket,
-        OutputS3KeyPrefix=<span class="string">'output'</span>,
-        Text=text2speech,
-        Engine=<span class="string">'neural'</span>)
+    <span class="comment"># Convert text to speech using Amazon Polly</span>
+    <span class="variable">polly_client</span> = <span class="variable">boto3</span>.<span class="method">client</span>(<span class="string">'polly'</span>)
+
+    <span class="variable">response</span> = <span class="variable">polly_client</span>.<span class="method">start_speech_synthesis_task</span>(
+        <span class="variable">VoiceId</span>=<span class="string">'Amy'</span>,
+        <span class="variable">OutputFormat</span>=<span class="string">'mp3'</span>,
+        <span class="variable">OutputS3BucketName</span>=<span class="variable">s3_bucket</span>,
+        <span class="variable">OutputS3KeyPrefix</span>=<span class="string">'output'</span>,
+        <span class="variable">Text</span>=<span class="variable">text2speech</span>,
+        <span class="variable">Engine</span>=<span class="string">'neural'</span>
+    )
+
+    <span class="keyword">return</span> {
+        <span class="string">'statusCode'</span>: <span class="number">200</span>,
+        <span class="string">'body'</span>: <span class="string">'Speech synthesis task started successfully'</span>
+    }
                 </div>
             </div>
 
@@ -682,7 +708,7 @@ sample_file = <span class="string">'textract_sample.jpeg'</span>
             <br>
             <p><span class="highlight">Automate document processing</span> • <span class="highlight">Enhance accessibility</span> • <span class="highlight">Reduce manual effort</span> • <span class="highlight">Integrate AI services</span></p>
             <br>
-            <a href="home.html" class="cta-button">
+            <a href="../home.html" class="cta-button">
                 🏠 View Home
             </a>
         </div>
