@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Inspector Lab - Vulnerability Scanning</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .header .description {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .objectives {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .objectives h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .objectives ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .objectives li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .objectives li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .services {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .services h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .service-card {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .service-card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .service-card p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .lab-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .lab-content h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .duration-badge {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../labs.html" class="back-button">← Back to Labs</a>
+            <h1>Amazon Inspector Lab</h1>
+            <p class="subtitle">Vulnerability Scanning & Security Assessment</p>
+            <p class="description">
+                Utilize Amazon Inspector to scan for vulnerabilities in AWS resources, specifically Amazon EC2 instances and AWS Lambda functions.
+                Learn how to configure Amazon Inspector, interpret vulnerability reports, and remediate security findings.
+            </p>
+        </div>
+
+        <div class="objectives">
+            <h2>Lab Objectives</h2>
+            <div class="duration-badge">Duration: ~75 minutes</div>
+            <p>By the end of this lab, you should be able to:</p>
+            <ul>
+                <li>Activate and configure Amazon Inspector</li>
+                <li>Analyze and interpret vulnerability findings</li>
+                <li>Remediate the vulnerabilities found by Amazon Inspector</li>
+            </ul>
+        </div>
+
+        <div class="services">
+            <h2>AWS Services Used</h2>
+
+            <div class="service-card">
+                <h3>Amazon Inspector</h3>
+                <p>A vulnerability management service that continuously scans your AWS workloads for software vulnerabilities and unintended network exposure. Amazon Inspector automatically discovers and scans running Amazon EC2 instances, container images in Amazon ECR, and AWS Lambda functions.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>AWS Lambda</h3>
+                <p>A compute service that runs your code in response to events. It automatically manages compute resources, enabling you to build applications that respond quickly to new information with automatic scaling and resource management.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>Amazon EC2</h3>
+                <p>Provides on-demand, scalable computing capacity in the AWS Cloud. Using Amazon EC2 reduces hardware costs so you can develop and deploy applications faster with configurable security, networking, and storage options.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>AWS Systems Manager</h3>
+                <p>Gives you visibility and control of your AWS infrastructure. It provides a unified interface to view operational data from multiple AWS services and helps manage your infrastructure securely at scale.</p>
+            </div>
+        </div>
+
+        <div class="lab-content">
+            <h2>Lab Scenario</h2>
+            <p>
+                The developers at AnyCompany Startup are in the initial phases of building an application primarily using AWS Lambda.
+                Throughout the development process, they need an automated security tool that not only scans for vulnerable software packages,
+                but also scans within the code itself. You decide to utilize Amazon Inspector to fill this need.
+            </p>
+            <br>
+            <p>
+                Amazon Inspector meets the requirements of being able to scan AWS Lambda functions by quickly responding to new deployments.
+                It also automatically scans additional resources such as EC2 instances within AnyCompany's AWS account.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,260 @@
+Using Amazon Inspector for Vulnerability Scanning
+
+Lab overview
+In this lab, you utilize Amazon Inspector to scan for vulnerabilities in your AWS resources, specifically Amazon Elastic Compute Cloud (Amazon EC2) instances and AWS Lambda functions. You learn how to configure Amazon Inspector, interpret the vulnerability reports, and remediate the findings.
+
+The developers at AnyCompany Startup are in the initial phases of building an application primarily using AWS Lambda. Throughout the development process, they need an automated security tool that not only scans for vulnerable software packages, but also scans within the code itself. You decide to utilize Amazon Inspector to fill this need. Amazon Inspector meets the requirements of being able to scan AWS Lambda functions by quickly responding to new deployments. It also automatically scans additional resources such as EC2 instances within AnyCompany’s AWS account.
+
+Objectives
+By the end of this lab, you should be able to do the following:
+
+Activate and configure Amazon Inspector.
+Analyze and interpret vulnerability findings.
+Remediate the vulnerabilities found by  Amazon Inspector.
+
+
+Duration
+This lab requires approximately 75 minutes to complete.
+
+AWS services used in this lab
+Amazon Inspector
+Amazon Inspector is a vulnerability management service that continuously scans your AWS workloads for software vulnerabilities and unintended network exposure. Amazon Inspector automatically discovers and scans running Amazon EC2 instances, container images in Amazon Elastic Container Registry (Amazon ECR), and AWS Lambda functions for known software vulnerabilities and unintended network exposure.
+
+AWS Lambda
+AWS Lambda is a compute service that runs your code in response to events. It automatically manages the compute resources, so you can build applications that respond quickly to new information. Lambda starts running your code within milliseconds of an event such as an image upload, in-app activity or output from a connected device. You can also use Lambda to create new backend services where compute resources are automatically invoked based on custom requests.
+
+Amazon EC2
+Amazon Elastic Compute Cloud (Amazon EC2) provides on-demand, scalable computing capacity in the Amazon Web Services (AWS) Cloud. Using Amazon EC2 reduces hardware costs so you can develop and deploy applications faster. You can use Amazon EC2 to launch as many or as few virtual servers as you need, configure security and networking, and manage storage.
+
+AWS Systems Manager
+AWS Systems Manager gives you visibility and control of your infrastructure on Amazon Web Services (AWS). It provides a unified user interface so that you can view operational data from multiple AWS services. Systems Manager uncomplicates resource and application management, shortens the time to detect and resolve operational problems, and lets you manage your infrastructure securely at scale.
+
+Task 1: Activating and configuring Amazon Inspector
+In this task, you activate Amazon Inspector and review its configuration settings. Inspector will automatically begin to scan your account environment.
+
+On the AWS Management Console, in the search box, search for and choose Amazon Inspector.
+
+On the Amazon Inspector page, choose Get Started.
+
+Choose Activate Inspector. After a moment, a banner is displayed with the message  Welcome to Inspector. Your first scan is underway.
+
+ Note: If a survey pop-up appears asking for your feedback on Amazon Inspector, go ahead and close the survey.
+
+Close all the banner messages on top of the page.
+
+In the navigation pane at the left of the page, choose Account management.
+
+ Note: If the navigation pane is collapsed, choose the menu  icon.
+
+Within the My Account dashboard, choose the refresh  button to display your account information.
+
+The My Account dashboard shows your account number and activation status for Amazon EC2, Amazon ECR, and AWS Lambda. By default, scanning is activated for Amazon EC2, Amazon ECR, and AWS Lambda standard scanning (AWS Lambda code scanning is deactivated). Amazon EC2 scanning takes a few minutes to activate, and in the meantime, it displays a status of Activating.
+
+To scan your Lambda functions for code vulnerabilities, you activate Lambda code scanning.
+
+Choose the Activate  button, select the checkbox  next to AWS Lambda Standard scanning + AWS Lambda Code scanning, and choose Submit.
+
+After a moment, a banner is displayed with the message  You have successfully activated 1 account.
+
+Within the My Account dashboard, choose the refresh  button.
+
+Now the status under the AWS Lambda scanning column should be activated for both standard and code scanning.
+
+In this lab, Amazon Inspector is not used for ECR scanning, so you can deactivate ECR scanning.
+
+Choose the Actions  button, and from the dropdown list, select Amazon ECR scanning.
+
+In the confirmation pop-up, choose Deactivate.
+
+A banner is displayed with the message  1 account have been scheduled for deactivation. This can take a few minutes to complete.
+
+Within the My Account dashboard, choose the refresh  button.
+
+When the deactivation process is complete, the Amazon ECR scanning column has the Deactivated status.
+
+ Task complete: You have successfully activated and configured Amazon Inspector.
+
+Task 2: Reviewing the inspected resources
+In this task, while you wait for the scan to finish, you review the current lab environment (the EC2 instance and the Lambda functions) to understand what specific resources are being scanned by Amazon Inspector.
+
+Task 2.1: Reviewing your Lambda functions
+In the Amazon Inspector navigation pane at the left of the page, under Resources coverage, choose Lambda functions.
+
+ Note: If the navigation pane is collapsed, choose the menu  icon.
+
+This page displays the Lambda functions in your AWS account and their Amazon Inspector scanning status. The Last scanned column displays the timestamp of the most recent scan.
+
+If needed, expand the width of the Last scanned column to display the full timestamp.
+
+ Note: You can choose the refresh  button to view the latest status of your scanned resources.
+
+Now you navigate to the AWS Lambda page to view the details of your Lambda functions.
+
+On the AWS Management Console, in the search box, search for and choose Lambda.
+
+From the list of Lambda functions, choose the get-request function.
+
+You are taken to the Lambda code editor page, and it is displaying the index.py file.
+
+ Note: If Lambda is not on the code editor page, select the Code tab and open the index.py file.
+
+The index.py file contains the lambda_handler function. The purpose of this function is to test an example API endpoint to see if the endpoint is active or not. A package named requests is imported at the top of the file. This package is used to send API requests.
+
+Choose the requirements.txt file.
+The purpose of this file is to list the Python packages that are required by the Lambda function. The request package is listed in this file, and specifically, the version 2.20.0 is needed. Amazon inspector will detect this version as vulnerable and recommend an upgrade to a later version.
+
+Task 2.2: Reviewing the EC2 Instance
+On the AWS Management Console, in the search box, search for and choose Amazon Inspector.
+
+In the navigation pane at the left of the page, under Resources coverage, choose EC2 instances.
+
+ Note: If the navigation pane is collapsed, choose the menu  icon.
+
+This page displays the EC2 instances in your AWS account and their Amazon Inspector scanning status. EC2 instance scanning takes longer to activate than Lambda scanning, so the EC2 instance scan may not have finished yet.
+
+In the navigation pane at the left of the page, under General settings, choose EC2 scanning settings.
+
+On the EC2 scan settings page, verify that the scan mode is set to Hybrid.
+
+If the scan mode is not set to Hybrid, choose the Edit button.
+
+In the pop-up window choose Hybrid, and select Save.
+
+The Hybrid setting means that Amazon Inspector will use agent-based scanning for all eligible instances managed by AWS Systems Manager (SSM), and agentless scanning using EBS snapshots for eligible instances that are not managed by SSM. The EC2 instance in this lab uses agent based scanning, but the hybrid setting ensures that any instance launched within an account will still be scanned by Amazon Inspector even if it does not have the SSM agent installed.
+
+Now you navigate to the AWS Systems Manager page to view the details of the EC2 instance.
+
+On the AWS Management Console, in the search box, search for and choose Systems Manager.
+
+In the navigation pane at the left of the page, under Node Tools, choose Fleet Manager.
+
+Choose the currently running instance form the Node ID column. This opens a page that displays details about the individual EC2 instance.
+
+On the details page, find the Agent version of the EC2 instance. This is the version of the SSM agent installed on the instance. This means that Amazon Inspector is using the agent-based approach to scan this instance.
+
+Within the Properties submenu, choose Inventory.
+
+Ensure the Inventory type is set to AWS:Application.
+
+You see a list of the applications installed on the EC2 instance. This inventory is scanned by Amazon Inspector to detect if there are any vulnerabilities.
+
+Amazon Inspector also scans for network vulnerabilities affecting your EC2 instance. Now you review the instance’s security group settings.
+
+On the AWS Management Console, in the search box, search for and choose EC2.
+In the navigation pane at the left of the page, choose Instances.
+Choose the instance ID of dev-instance to open its summary page.
+On the instance summary page, choose the Security tab.
+Under the security groups section, choose the security group ID corresponding to LabSG.
+Ensure you are on the inbound rules tab, which displays a list of rules.
+Within the inbound rules list, there are rules that open port 22 to specific IP addresses. In this lab scenario, these are the IP addresses of the computers that the AnyCompany developers use to remotely connect to the EC2 instance. In the next task, you see that Amazon Inspector detects this as a vulnerability.
+
+ Task complete: You have successfully reviewed the EC2 instance and the Lambda functions scanned by Amazon Inspector.
+
+Task 3: Remediating the vulnerabilities findings
+In this task, you analyze the findings reported by Amazon Inspector and interpret the vulnerability details. You update your Lambda functions to remediate the vulnerabilities. After updating the functions, you review the Amazon Inspector findings to confirm the vulnerability has been fixed. You also create a supression rule for an EC2 instance vulnerability finding.
+
+Task 3.1: Remediating your Lambda function’s Package Vulnerabilities
+On the AWS Management Console, in the search box, search for and choose Amazon Inspector.
+
+In the navigation pane at the left of the page, under Findings, choose By Lambda function.
+
+ Note: If the navigation pane is collapsed, choose the menu  icon.
+
+Choose the get-request function.
+
+Choose the finding CVE-2023-32681 - requests. This opens a pane containing the vulnerability information.
+
+Within the information pane, under the Vulnerability details section choose the external link next to the Vulnerability ID.
+The link opens a new browser tab to the vulnerability detail webpage from the National Vulnerability Database (NVD), which is a repository of standardized vulnerability management data maintained by the National Institute of Standards and Technology (NIST). This page offers more detailed information about the vulnerability.
+
+Close the browser tab of the NVD webpage, and navigate back to the browser tab of Amazon Inspector.
+
+Within the information pane, find the the Remediation section.
+
+The issue is that the requests package is vulnerable and outdated, and the recommendation is to upgrade the package. Next, you apply the remediation to your Lambda function.
+
+On the AWS Management Console, in the search box, search for and choose Lambda.
+
+From the list of Lambda functions, choose the get-request function.
+
+Within the Lambda function code editor’s file browser, choose requirements.txt.
+
+Remove the version number and equal signs from requests==2.20.0, so that the line becomes only requests.
+
+The requirements.txt file tells AWS Lambda which Python packages are required to run your function. When no version number is specified, the latest version of the package will be installed by default. This ensures that your Lambda funtion uses the latest version of the package.
+
+Choose the Deploy button to deploy the function.
+
+A banner is displayed with the message  Successfully updated the function get-request.
+
+This latest deployment of your Lambda function will trigger Amazon Inspector to initiate a new scan of the function.
+
+On the AWS Management Console, in the search box, search for and choose Amazon Inspector.
+
+In the navigation pane at the left of the page, under Findings, choose All findings.
+
+ Note: If the navigation pane is collapsed, choose the menu  icon.
+
+In the findings dashboard, under finding status, change the selection from Active to Closed.
+
+In the list of closed findings, you see CVE-2023-32681 - requests. This confirms the successful remediation of the vulnerability.
+
+ Note: It may take a few minutes for the scan to initiate and finish. You can choose the refresh  button to view the latest status of your scanned resources.
+
+In the navigation pane at the left of the page, under Resources coverage, choose Lambda functions.
+
+If needed, expand the width of the Last scanned column to display the full timestamp.
+
+You see that the most recently scanned Lambda function has an updated timestamp.
+
+Task 3.2: Creating a supression rule for an EC2 instance vulnerability
+In this task, Amazon inspector detects an open port on your EC2 instance, but you allow this port to be open so that developers can remotely connect to your EC2 instance. You create a suppression rule to prevent this vulnerability finding from appearing on the active findings list.
+
+On the AWS Management Console, in the search box, search for and choose Amazon Inspector.
+
+In the navigation pane at the left of the page, under Findings, choose All findings.
+
+ Note: If the navigation pane is collapsed, choose the menu  icon.
+
+From the vulnerabilities list, choose Port 22 is reachable from an Internet Gateway - TCP.
+
+The information pane for this vulnerability shows details such as Resource affected, which shows the specific EC2 instance that is affected. Under the remediation section, the recommendation is to close the port by modifying the associated security group or access control lists (ACLs), however, in this lab scenario, you want the AnyCompany developers to able to remotely connect to the EC2 instance using the SSH protocol, which uses port 22.
+
+In the navigation pane at the left of the page, choose Suppression rules.
+
+Choose Create rule.
+
+For Name, enter Port 22 suppression rule.
+
+For Description, enter Leave Port 22 open for SSH.
+
+ Caution: If you encounter an issue where the text entry dissapears every time you navigate away and back to your browser window, you will have to enter all of the text and filters into the input fields of the form all at once and choose Save, without navigating away from the browser.
+
+For the Suppression rule filters, choose input field to open a drop down list.
+
+In the drop down list, under the Network reachability submenu, select Open port and enter the following configuration:
+
+For From, enter 22
+For To, enter 22
+Choose Apply
+Choose Save.
+
+A banner is displayed with the message  Your suppression rule was successfully created. We will start suppressing impacted findings now.
+
+In the navigation pane at the left of the page, under Findings, choose All findings.
+
+In the findings dashboard, under Finding status, change the selection from Active to Suppressed.
+
+It may take some time for the supression rule to take effect. Afterwards, Port 22 is in the supressed findings list and no longer in the active findings list.
+
+ Note: You can choose the refresh  button to view the latest status.
+
+ Task complete: You have successfully remediated the package and code vulnerabilities in your Lambda functions. You also created a supression rule to filter out a network vulnerability that affects your EC2 instance.
+
+Conclusion
+ You have successfully done the following:
+
+Activated and configured Amazon Inspector
+Analyzed and interpreted vulnerability findings
+Remediated the vulnerabilities found by Amazon Inspector
+End lab
