@@ -5,9 +5,9 @@
 This lab demonstrates the implementation of automated vulnerability management using Amazon Inspector for comprehensive security assessment across AWS resources. The solution provides continuous scanning capabilities for EC2 instances and Lambda functions, identifying software vulnerabilities, unintended network exposures, and security misconfigurations to maintain a robust security posture.
 
 ### 🏗️ System Architecture
-![Inspector Implementation Architecture](screenshots/first-scan-activated-std+code.png)
+![Inspector Implementation Architecture](inspector-architecture-diagram.md)
 
-*Complete vulnerability management architecture demonstrating automated resource discovery, vulnerability assessment, network reachability analysis, and remediation workflows using Amazon Inspector with integrated AWS Systems Manager for patch management and security governance.*
+*Complete vulnerability management architecture demonstrating automated resource discovery, vulnerability assessment, network reachability analysis, and remediation workflows using Amazon Inspector with integrated AWS Systems Manager for patch management and security governance. The architecture shows the end-to-end flow from Lambda functions and EC2 instances through Inspector's scanning engines to findings analysis, remediation workflows, and integration with external vulnerability databases.*
 
 ## 🛠️ Skills Demonstrated
 
