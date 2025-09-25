@@ -3,25 +3,21 @@
 # This file controls what content is excluded from GitHub Pages build
 # making specified files and directories invisible to site visitors
 
-# Exclude files and directories from GitHub Pages build
+# Exclude all root files and directories EXCEPT labs directory
 exclude:
   - "*.py"                    # Python test scripts
-  - robots.txt               # Search engine control file
-  - template.json            # Configuration template
-  - README.md                # Project documentation
-  - .gitignore              # Git ignore file
-  - .private-files          # Private files documentation
-  - ACCESS-CONTROL.md       # Access control documentation
-  - besttodo.txt            # Todo instructions file
-  - home.html               # Personal portfolio page
-  - myphoto.jpeg            # Personal photo
-  - style.css               # Main styling file
-  - main-style.css          # Additional styling
-  - labs.html               # Lab directory page (button access only)
-  - itsupport.txt           # IT Support source content
-  - IT-Support-README.md    # IT Support documentation (GitHub accessible)
-  - structure.png           # Directory structure diagram
-  - 404.html                # Error page (functional but not browsable)
+  - "*.txt"                   # Text files
+  - "*.md"                    # Markdown files
+  - "*.css"                   # Styling files
+  - "*.jpeg"                  # Image files
+  - "*.jpg"                   # Image files
+  - "*.png"                   # Image files
+  - "*.html"                  # All HTML files in root
+  - _private/                 # Private directory
+  - _test/                    # Test directory
+  - .vscode/                  # VS Code directory
+  - .git/                     # Git directory
+  - .gitignore               # Git ignore file
 
 # Additional Jekyll settings for better GitHub Pages control
 plugins:
@@ -52,10 +48,6 @@ defaults:
       layout: "lab"
       author: "Mohamed Adama Kaba"
 
-# Keep lab directories accessible
+# Only include the labs directory and its contents
 include:
-  - amazon-textract-polly-lab
-  - x-ray-lab
-  - rag-bedrock-lab
-  - capstone-project
-  - inspector-vul-scan-lab
+  - labs/
