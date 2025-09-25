@@ -18,6 +18,10 @@ exclude:
   - style.css               # Main styling file
   - main-style.css          # Additional styling
   - labs.html               # Lab directory page (button access only)
+  - itsupport.txt           # IT Support source content
+  - IT-Support-README.md    # IT Support documentation (GitHub accessible)
+  - structure.png           # Directory structure diagram
+  - 404.html                # Error page (functional but not browsable)
 
 # Additional Jekyll settings for better GitHub Pages control
 plugins:
@@ -54,3 +58,4 @@ include:
   - x-ray-lab
   - rag-bedrock-lab
   - capstone-project
+  - inspector-vul-scan-lab

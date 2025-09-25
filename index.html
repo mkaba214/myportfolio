@@ -3,61 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohamed Adama Kaba - Redirecting...</title>
-    <meta http-equiv="refresh" content="0; url=home.html">
-    <link rel="canonical" href="home.html">
+    <title>Mohamed Adama Kaba - AWS Labs Portfolio</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            padding: 50px;
-            margin: 0;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            color: #333;
         }
-        .redirect-message {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        a {
+        .header {
+            text-align: center;
             color: white;
-            text-decoration: underline;
+            margin-bottom: 50px;
+        }
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .lab-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .lab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        .lab-card h3 {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .lab-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .lab-tag {
+            display: inline-block;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .portfolio-link {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .portfolio-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .portfolio-button:hover {
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-    <div class="redirect-message">
-        <h1>Mohamed Adama Kaba</h1>
-        <p>Redirecting to portfolio...</p>
-        <div class="spinner"></div>
-        <p><small>If you are not redirected automatically, <a href="home.html">click here</a></small></p>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 AWS Labs Portfolio</h1>
+            <p>Professional cloud architecture and DevOps implementations</p>
+        </div>
+
+        <div class="labs-grid">
+            <div class="lab-card" onclick="window.open('amazon-textract-polly-lab/', '_blank')">
+                <h3>📝 Amazon Textract & Polly Lab</h3>
+                <p>Document processing and text-to-speech implementation using AWS AI services</p>
+                <span class="lab-tag">AI/ML</span>
+                <span class="lab-tag">Serverless</span>
+                <span class="lab-tag">Document Processing</span>
+            </div>
+
+            <div class="lab-card" onclick="window.open('x-ray-lab/', '_blank')">
+                <h3>🔍 X-Ray Distributed Tracing Lab</h3>
+                <p>Application performance monitoring and distributed tracing implementation</p>
+                <span class="lab-tag">Monitoring</span>
+                <span class="lab-tag">Performance</span>
+                <span class="lab-tag">Microservices</span>
+            </div>
+
+            <div class="lab-card" onclick="window.open('rag-bedrock-lab/', '_blank')">
+                <h3>🤖 RAG with Amazon Bedrock Lab</h3>
+                <p>Retrieval-Augmented Generation using Amazon Bedrock and Knowledge Bases</p>
+                <span class="lab-tag">AI/ML</span>
+                <span class="lab-tag">RAG</span>
+                <span class="lab-tag">Foundation Models</span>
+            </div>
+
+            <div class="lab-card" onclick="window.open('inspector-vul-scan-lab/', '_blank')">
+                <h3>🛡️ Amazon Inspector Vulnerability Scanning Lab</h3>
+                <p>Automated vulnerability management and security assessment implementation</p>
+                <span class="lab-tag">Security</span>
+                <span class="lab-tag">Vulnerability Management</span>
+                <span class="lab-tag">Compliance</span>
+            </div>
+
+            <div class="lab-card" onclick="window.open('capstone-project/', '_blank')">
+                <h3>🎯 Capstone Project</h3>
+                <p>Comprehensive AWS implementation showcasing multiple services integration</p>
+                <span class="lab-tag">Full-Stack</span>
+                <span class="lab-tag">Integration</span>
+                <span class="lab-tag">Architecture</span>
+            </div>
+        </div>
+
+        <div class="portfolio-link">
+            <a href="home.html" class="portfolio-button">
+                👨‍💻 View Complete Portfolio
+            </a>
+        </div>
     </div>
-    <script>
-        // JavaScript redirect as backup
-        setTimeout(function() {
-            window.location.href = 'home.html';
-        }, 100);
-    </script>
 </body>
 </html>
