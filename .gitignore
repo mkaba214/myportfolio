@@ -1,0 +1,25 @@
+# Private and sensitive files
+_private/
+_test/
+.vscode/
+
+# Personal files
+home.html
+myphoto.jpeg
+*.pem
+*.key
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+
+# Build outputs
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata

@@ -1,23 +1,41 @@
 # GitHub Pages Jekyll Configuration
 # ================================
-# This file controls what content is excluded from GitHub Pages build
-# making specified files and directories invisible to site visitors
 
-# Exclude all root files and directories EXCEPT labs directory
+# Site settings
+title: Portfolio Labs
+description: Technical Lab Demonstrations
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+
+# Access Control
+# =============
+# Exclude everything except labs directory
 exclude:
-  - "*.py"                    # Python test scripts
-  - "*.txt"                   # Text files
-  - "*.md"                    # Markdown files
-  - "*.css"                   # Styling files
-  - "*.jpeg"                  # Image files
-  - "*.jpg"                   # Image files
-  - "*.png"                   # Image files
-  - "*.html"                  # All HTML files in root
-  - _private/                 # Private directory
-  - _test/                    # Test directory
-  - .vscode/                  # VS Code directory
-  - .git/                     # Git directory
-  - .gitignore               # Git ignore file
+  - "/*.html"              # All HTML files in root
+  - "/*.css"               # All CSS files in root
+  - "/*.md"                # All Markdown files in root
+  - "/*.txt"               # All text files in root
+  - "/*.jpeg"              # All JPEG files in root
+  - "/*.jpg"               # All JPG files in root
+  - "/*.png"               # All PNG files in root
+  - "_private/"            # Private directory
+  - "_test/"              # Test directory
+  - "assets/"             # Assets directory
+  - ".vscode/"            # VS Code settings
+  - ".git/"               # Git directory
+  - ".gitignore"          # Git ignore file
+  - "404.html"            # Error page
+
+# Include only labs directory
+include:
+  - "labs/"
+
+# Keep files processing
+keep_files:
+  - ".git"
+  - ".gitignore"
 
 # Additional Jekyll settings for better GitHub Pages control
 plugins:
